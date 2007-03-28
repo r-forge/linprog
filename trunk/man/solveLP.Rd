@@ -9,7 +9,7 @@
 
 \usage{
    solveLP( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
-            zero=1e-10, lpSolve=FALSE, verbose=FALSE )
+            zero=1e-9, tol=1e-6, lpSolve=FALSE, verbose=FALSE )
 }
 
 \arguments{
@@ -20,6 +20,8 @@
    \item{maxiter}{maximum number of iterations.}
    \item{zero}{numbers smaller than this value (in absolute terms) are
       set to zero.}
+   \item{tol}{if the constraints are violated by more than this number,
+      the program is stopped and an error message is displayed.}
    \item{lpSolve}{logical. Should the package 'lpSolve' be used to solve
       the LP problem?}
    \item{verbose}{an optional logic variable to indicate whether interim
@@ -115,7 +117,7 @@
 
 ## Production activities
 cvec <- c(1800, 600, 600)  # gross margins
-names(cvec) <- c("Milk","Bulls","Pigs")
+names(cvec) <- c("Cows","Bulls","Pigs")
 
 ## Constraints (quasi-fix factors)
 bvec <- c(40, 90, 2500)  # endowment
