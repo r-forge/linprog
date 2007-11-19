@@ -7,5 +7,5 @@ Maintainer: Arne Henningsen <ahenningsen@agric-econ.uni-kiel.de>
 Depends: R (>= 2.4.0)
 Description: This package can be used to solve Linear Programming / Linear
    Optimization problems by using the simplex algorithm.
-License: GPL version 2 or newer
+License: GPL (>= 2)
 URL: http://www.r-project.org, http://www.arne-henningsen.de
