@@ -76,6 +76,9 @@ Pigs    0
 
 > # print all elements of the returned object
 > print.default( result1a )
+$status
+[1] 0
+
 $opt
 [1] 93600
 
@@ -248,6 +251,9 @@ Feed2 2.954545
 
 > # print all elements of the returned object
 > print.default( result2a )
+$status
+[1] 0
+
 $opt
 [1] 10.45455
 

@@ -1,6 +1,31 @@
 solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
                      zero=1e-10, lpSolve=FALSE, verbose=FALSE )
 {
+
+   result <- list()  # list for results that will be returned
+   result$status <- 0
+
+   nVar <- length(cvec)  # number of variables
+   nCon <- length(bvec)  # number of constraints
+
+   if( !all.equal( dim( Amat ), c( nCon, nVar ) ) == TRUE ) {
+      stop( paste( "Matrix A must have as many rows as constraints (=elements",
+         "of vector b) and as many columns as variables (=elements of vector c).\n" ) )
+   }
+
+   ## Labels
+   if( is.null(names(cvec))) {
+      clab <- as.character(1:nVar)
+   } else {
+      clab <- names(cvec)
+   }
+   if( is.null(names(bvec))) {
+      blab <- as.character(1:nCon)
+   } else {
+      blab <- names(bvec)
+   }
+
+   ## lpSolve
    if( lpSolve ) {
       library( lpSolve )
       if( maximum ) {
@@ -20,24 +45,11 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       con       <- NULL
 
    } else {
-      nVar <- length(cvec)  # number of variables
-      nCon <- length(bvec)  # number of constraints
+      ## Simplex algorithm
       iter1 <- 0
       iter2 <- 0
 
       if(maximum) cvec <- -cvec
-
-      ## Labels
-      if( is.null(names(cvec))) {
-         clab <- as.character(1:nVar)
-      } else {
-         clab <- names(cvec)
-      }
-      if( is.null(names(bvec))) {
-         blab <- as.character(1:nCon)
-      } else {
-         blab <- names(bvec)
-      }
 
       ## Slack Variables
       for(i in 1:nCon) clab <- c( clab, paste("S", blab[i] ) )
@@ -253,7 +265,6 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
    }
 
    ## List of Results
-   result <- list()
    result$opt      <- round( objval, digits=10 )
    result$iter1    <- ifelse( iter1 < maxiter, iter1, -iter1 )
    result$iter2    <- ifelse( iter2 < maxiter, iter2, -iter2 )
