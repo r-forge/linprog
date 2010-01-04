@@ -63,7 +63,8 @@ writeMps <- function( file, cvec, bvec, Amat, name="LP" ) {
       for(j in 1:nCon) {
          if( Amat[j,i] != 0 ) {
             line <- paste("    ",clab[i], sep="" )
-            line <- paste( line, paste( rep( " ", 14-nchar(line)),collapse=""), blab[j], sep="")
+            line <- paste( line, paste( rep( " ", 14-nchar(line)),collapse=""),
+               blab[j], sep="")
             line <- paste( line, paste( rep( " ", 36 - nchar(line) - nchar(
                       as.character( signif( Amat[j,i], 10 )))), collapse=""),
                       as.character( signif( Amat[j,i], 10 )), sep="")
