@@ -45,11 +45,9 @@
 \examples{
 
 ## example of Steinhauser, Langbehn and Peters (1992)
-\dontrun{library( linprog )}
-
 ## Production activities
 cvec <- c(1800, 600, 600)  # gross margins
-names(cvec) <- c("Milk","Bulls","Pigs")
+names(cvec) <- c("Cows","Bulls","Pigs")
 
 ## Constraints (quasi-fix factors)
 bvec <- c(40, 90, 2500)  # endowment
