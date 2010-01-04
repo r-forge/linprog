@@ -11,6 +11,8 @@ Amat <- rbind( c(  0.7,   0.35,   0 ),
                c( 50,    12.5,   20 ) )
 result1a <- solveLP( cvec, bvec, Amat, TRUE )
 print( result1a )
+# print all elements of the returned object
+print.default( result1a )
 
 ## Example 2
 ## example 1.1.3 of Witte, Deppe and Born (1975)
@@ -23,3 +25,5 @@ Amat <- rbind( c(-1.6,-2.4 ),
                c( 2.0, 2.0 ) )
 result2a <- solveLP( cvec, bvec, Amat )
 print( result2a )
+# print all elements of the returned object
+print.default( result2a )
