@@ -460,7 +460,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
                "with equality constraints" ) )
          }
          con$dual.p <- con$dual
-         dualres <- solveLP( bevec, cvec, t(Amat), rep(">=",length(cvec)), cvec )
+         dualres <- solveLP( bvec, cvec, t(Amat), rep(">=",length(cvec)), cvec )
          con$dual <- dualres$solution
       }
 
