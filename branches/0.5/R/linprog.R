@@ -277,14 +277,14 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       allvar   <- round( allvar, digits=10 )
       solution <- allvar[ 1 : nVar, 1 ]
 
+      result$iter1    <- iter1
+      result$iter2    <- iter2
       if( iter1 >= maxiter ) result$status <- 4
       if( iter2 >= maxiter ) result$status <- 5
    }
 
    ## List of Results
    result$opt      <- round( objval, digits=10 )
-   result$iter1    <- ifelse( iter1 < maxiter, iter1, -iter1 )
-   result$iter2    <- ifelse( iter2 < maxiter, iter2, -iter2 )
    result$solution <- solution
    result$basvar   <- basvar
    result$con      <- con

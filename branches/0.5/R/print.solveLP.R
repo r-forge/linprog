@@ -6,28 +6,54 @@ print.solveLP <- function( x, digits=6,... ) {
    on.exit(options(digits=save.digits))
 
    cat("\n\nResults of Linear Programming / Linear Optimization\n")
-   cat("\nObjective function")
-   if( object$maximum ) {
-      cat(" (Maximum):\n")
+   if( object$lpSolve ) cat("(using lpSolve)\n")
+
+   if( object$status %in% c( 0, 4, 5 ) ) {
+      cat("\nObjective function")
+      if( object$maximum ) {
+         cat(" (Maximum): ")
+      } else {
+         cat(" (Minimum): ")
+      }
+      cat( object$opt, "\n" )
+
+      if( !is.null( object$iter1 ) ) {
+         cat("\nIterations in phase 1: ")
+         cat( object$iter1 )
+         if( object$iter1 >= object$maxiter ) {
+            cat(" (equals 'maxiter' !!!)")
+         }
+         cat("\nIterations in phase 2: ")
+         cat( object$iter2 )
+         if( object$iter2 >= object$maxiter ) {
+            cat(" (equals 'maxiter' !!!)")
+         }
+      }
+      cat("\nSolution\n")
+      object$solution <- as.matrix(object$solution)
+      colnames( object$solution ) <- c("opt")
+      print( object$solution )
+
+      if( !is.null( object$basvar ) ) {
+         cat("\nBasic Variables\n")
+         print( object$basvar )
+      }
+
+      cat("\nConstraints\n")
+      print( object$con )
+
+      if( !is.null( object$allvar ) ) {
+         cat("\nAll Variables (including slack variables)\n")
+         print( object$allvar )
+      }
    } else {
-      cat(" (Minimum):\n")
+      cat( "lpSolve returned only error codes: ", object$status )
    }
-   print( object$opt )
-   cat("\nIterations in phase 1: ")
-   cat(abs(object$iter1))
-   if( !object$lpSolve ) {
-      if( object$iter1 < 0 ) cat(" (equals 'maxiter' !!!)")
+   if( object$status == 4 ) {
+      cat( "Simplex algorithm Phase 1 did not succed" )
+   } else if( object$status == 5 ) {
+      cat( "Simplex algorithm Phase 2 did not succed" )
    }
-   cat("\nIterations in phase 2: ")
-   cat(abs(object$iter2))
-   if( !object$lpSolve ) {
-      if( object$iter2 < 0 ) cat(" (equals 'maxiter' !!!)")
-   }
-   cat("\n\nBasic Variables\n")
-   print( object$basvar )
-   cat("\nConstraints\n")
-   print( object$con )
-   cat("\nAll Variables (including slack variables)\n")
-   print( object$allvar )
+
    cat("\n")
 }
