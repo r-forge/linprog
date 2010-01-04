@@ -60,6 +60,20 @@ S Land    0.8    0    NA  731.092    0.0      0.80
 S Stable  0.0    0    NA       NA -240.0     15.00
 S Labor   0.0    0    NA       NA  -28.8   1375.00
 
+> # print summary results
+> summary( result1a )
+
+
+Results of Linear Programming / Linear Optimization
+
+Objective function (Maximum): 93600 
+
+Solution
+      opt
+Cows   44
+Bulls  24
+Pigs    0
+
 > # print all elements of the returned object
 > print.default( result1a )
 $opt
@@ -162,6 +176,20 @@ NULL
 All Variables (including slack variables)
 NULL
 
+> # print summary results
+> summary( result1c )
+
+
+Results of Linear Programming / Linear Optimization
+
+Objective function (Maximum): 93600 
+
+Solution
+     opt
+[1,]  44
+[2,]  24
+[3,]   0
+
 > 
 > 
 > ## Example 2
@@ -204,6 +232,19 @@ Feed2     2.95455 2.0 1.00000 3.750000       NA        NA
 S Protein 0.00000 0.0      NA       NA 0.568182   3.60000
 S Fat     0.00000 0.0      NA       NA 3.181818   1.35000
 S Fibre   2.45455 0.0    -Inf 0.833333 0.000000   2.45455
+
+> # print summary results
+> summary( result2a )
+
+
+Results of Linear Programming / Linear Optimization
+
+Objective function (Minimum): 10.45455 
+
+Solution
+           opt
+Feed1 1.818182
+Feed2 2.954545
 
 > # print all elements of the returned object
 > print.default( result2a )
@@ -349,6 +390,19 @@ NULL
 
 All Variables (including slack variables)
 NULL
+
+> # print summary results
+> summary( result2c )
+
+
+Results of Linear Programming / Linear Optimization
+
+Objective function (Minimum): 10.45455 
+
+Solution
+          opt
+[1,] 1.818182
+[2,] 2.954545
 
 > 
 > 

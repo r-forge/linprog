@@ -11,6 +11,8 @@ Amat <- rbind( c(  0.7,   0.35,   0 ),
                c( 50,    12.5,   20 ) )
 result1a <- solveLP( cvec, bvec, Amat, TRUE )
 print( result1a )
+# print summary results
+summary( result1a )
 # print all elements of the returned object
 print.default( result1a )
 
@@ -21,6 +23,8 @@ all.equal( result1a, result1b )
 # estimation with lpSolve
 result1c <- solveLP( cvec, bvec, Amat, TRUE, lpSolve = TRUE, verbose = TRUE )
 print( result1c )
+# print summary results
+summary( result1c )
 
 
 ## Example 2
@@ -34,6 +38,8 @@ Amat <- rbind( c(-1.6,-2.4 ),
                c( 2.0, 2.0 ) )
 result2a <- solveLP( cvec, bvec, Amat )
 print( result2a )
+# print summary results
+summary( result2a )
 # print all elements of the returned object
 print.default( result2a )
 
@@ -44,4 +50,6 @@ all.equal( result1a, result1b )
 # estimation with lpSolve
 result2c <- solveLP( cvec, bvec, Amat, lpSolve = TRUE, verbose = TRUE )
 print( result2c )
+# print summary results
+summary( result2c )
 
