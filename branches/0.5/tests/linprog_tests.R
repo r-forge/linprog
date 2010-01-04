@@ -25,6 +25,8 @@ result1c <- solveLP( cvec, bvec, Amat, TRUE, lpSolve = TRUE, verbose = 4 )
 print( result1c )
 # print summary results
 summary( result1c )
+# print all elements of the returned object
+print.default( result1c )
 
 
 ## Example 2
@@ -52,4 +54,6 @@ result2c <- solveLP( cvec, bvec, Amat, lpSolve = TRUE, verbose = 4 )
 print( result2c )
 # print summary results
 summary( result2c )
+# print all elements of the returned object
+print.default( result2c )
 

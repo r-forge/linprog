@@ -194,6 +194,31 @@ Solution
 [2,]  24
 [3,]   0
 
+> # print all elements of the returned object
+> print.default( result1c )
+$status
+[1] 0
+
+$opt
+[1] 93600
+
+$iter1
+logical(0)
+
+$iter2
+logical(0)
+
+$solution
+[1] 44 24  0
+
+$maximum
+[1] TRUE
+
+$lpSolve
+[1] TRUE
+
+attr(,"class")
+[1] "solveLP"
 > 
 > 
 > ## Example 2
@@ -414,5 +439,30 @@ Solution
 [1,] 1.818182
 [2,] 2.954545
 
+> # print all elements of the returned object
+> print.default( result2c )
+$status
+[1] 0
+
+$opt
+[1] 10.45455
+
+$iter1
+logical(0)
+
+$iter2
+logical(0)
+
+$solution
+[1] 1.818182 2.954545
+
+$maximum
+[1] FALSE
+
+$lpSolve
+[1] TRUE
+
+attr(,"class")
+[1] "solveLP"
 > 
 > 
