@@ -1,5 +1,5 @@
-## print the (summary) results
+## create the summary results
 summary.solveLP <- function(object,...) {
-  summary.solveLP <- object
-  summary.solveLP
+   class( object ) <- c( "summary.solveLP", class( object ) )
+   return( object )
 }

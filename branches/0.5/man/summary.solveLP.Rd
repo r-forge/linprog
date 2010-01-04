@@ -1,5 +1,6 @@
 \name{summary.solveLP}
 \alias{summary.solveLP}
+\alias{print.summary.solveLP}
 \title{summary.solveLP}
 
 \description{
@@ -8,15 +9,17 @@
 
 \usage{
    \method{summary}{solveLP}(object,...)
+   \method{print}{summary.solveLP}(x,...)
 }
 
 \arguments{
-  \item{object}{an object of type \code{solveLP}.}
+  \item{object}{an object returned by \code{\link{solveLP}}.}
+  \item{x}{an object returned by \code{summary.solveLP}.}
   \item{...}{not used by user.}
 }
 
 \value{
-  \code{summary.solveLP} returns an object of type \code{solveLP}.
+  \code{summary.solveLP} returns an object of class \code{summary.solveLP}.
 }
 
 \author{
