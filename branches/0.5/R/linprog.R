@@ -5,6 +5,8 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
    result <- list()  # list for results that will be returned
    result$status <- 0
 
+   rdigits <- -round( log10( zero ) )
+
    nVar <- length(cvec)  # number of variables
    nCon <- length(bvec)  # number of constraints
 
@@ -45,7 +47,14 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       iter2     <- NULL
       allvar    <- NULL
       basvar    <- NULL
-      con       <- NULL
+
+      ## Results: Constraints
+      con <- matrix( NA, nCon, 3 )
+      colnames(con) <- c( "max", "actual", "diff" )
+      rownames(con) <- blab
+      con[ , 1 ] <- bvec
+      con[ , 2 ] <- round( c( Amat %*% solution ), digits = rdigits )
+      con[ , 3 ] <- con[ , 1 ] - con[ , 2 ]
 
    } else {
       ## Simplex algorithm

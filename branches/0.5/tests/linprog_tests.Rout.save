@@ -182,7 +182,10 @@ Bulls  24
 Pigs    0
 
 Constraints
-NULL
+        max actual diff
+Land     40   39.2  0.8
+Stable   90   90.0  0.0
+Labor  2500 2500.0  0.0
 
 > # print summary results
 > summary( result1c )
@@ -209,6 +212,12 @@ $opt
 $solution
  Cows Bulls  Pigs 
    44    24     0 
+
+$con
+        max actual diff
+Land     40   39.2  0.8
+Stable   90   90.0  0.0
+Labor  2500 2500.0  0.0
 
 $maximum
 [1] TRUE
@@ -428,7 +437,10 @@ Feed1 1.81818
 Feed2 2.95455
 
 Constraints
-NULL
+          max    actual    diff
+Protein -10.0 -10.00000 0.00000
+Fat      -1.5  -1.50000 0.00000
+Fibre    12.0   9.54545 2.45455
 
 > # print summary results
 > summary( result2c )
@@ -454,6 +466,12 @@ $opt
 $solution
    Feed1    Feed2 
 1.818182 2.954545 
+
+$con
+          max     actual     diff
+Protein -10.0 -10.000000 0.000000
+Fat      -1.5  -1.500000 0.000000
+Fibre    12.0   9.545455 2.454545
 
 $maximum
 [1] FALSE
