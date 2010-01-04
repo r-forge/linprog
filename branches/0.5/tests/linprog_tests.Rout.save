@@ -126,6 +126,9 @@ Z-C      0     0 696.000      0   240.00 28.8000 93600.0
 $lpSolve
 [1] FALSE
 
+$maxiter
+[1] 1000
+
 attr(,"class")
 [1] "solveLP"
 > 
@@ -189,10 +192,10 @@ Results of Linear Programming / Linear Optimization
 Objective function (Maximum): 93600 
 
 Solution
-     opt
-[1,]  44
-[2,]  24
-[3,]   0
+      opt
+Cows   44
+Bulls  24
+Pigs    0
 
 > # print all elements of the returned object
 > print.default( result1c )
@@ -209,13 +212,17 @@ $iter2
 logical(0)
 
 $solution
-[1] 44 24  0
+ Cows Bulls  Pigs 
+   44    24     0 
 
 $maximum
 [1] TRUE
 
 $lpSolve
 [1] TRUE
+
+$maxiter
+[1] 1000
 
 attr(,"class")
 [1] "solveLP"
@@ -326,6 +333,9 @@ Z-C         0     0  0.5681818  3.181818       0 -10.454545
 $lpSolve
 [1] FALSE
 
+$maxiter
+[1] 1000
+
 attr(,"class")
 [1] "solveLP"
 > 
@@ -435,9 +445,9 @@ Results of Linear Programming / Linear Optimization
 Objective function (Minimum): 10.45455 
 
 Solution
-          opt
-[1,] 1.818182
-[2,] 2.954545
+           opt
+Feed1 1.818182
+Feed2 2.954545
 
 > # print all elements of the returned object
 > print.default( result2c )
@@ -454,13 +464,17 @@ $iter2
 logical(0)
 
 $solution
-[1] 1.818182 2.954545
+   Feed1    Feed2 
+1.818182 2.954545 
 
 $maximum
 [1] FALSE
 
 $lpSolve
 [1] TRUE
+
+$maxiter
+[1] 1000
 
 attr(,"class")
 [1] "solveLP"

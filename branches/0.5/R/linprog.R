@@ -35,7 +35,10 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       }
       lpres <- lp (direction = direction, cvec, Amat, rep("<=",length(bvec)), bvec )
 
+      result$status <- lpres$status
+
       solution  <- lpres$solution
+      names( solution ) <- clab
       objval    <- lpres$objval
       Tab       <- NULL
       iter1     <- NULL
@@ -133,7 +136,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
             }
             if( verbose >= 4 ) print(Tab2)
          }
-         if(iter1 >= maxiter ) warning("Simplex algorithm (phase 1) did reach optimum.")
+         if(iter1 >= maxiter ) warning("Simplex algorithm (phase 1) did not reach optimum.")
          Tab <- cbind( Tab2[ 1:(nCon+1), 1:(nCon+nVar) ], Tab2[ 1:(nCon+1), nVar+nCon+nArt+1 ] )
          if( verbose >= 3 ) {
             print("New starting Tableau for Phase II")
@@ -169,7 +172,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
          }
          if( verbose >= 4 ) print(Tab)
       }
-      if(iter2 >= maxiter ) warning("Simplex algorithm (phase 2) did reach optimum.")
+      if(iter2 >= maxiter ) warning("Simplex algorithm (phase 2) did not reach optimum.")
       ## Results: Basic Variables
       basvar <- matrix( NA, nCon, 1 )
       colnames(basvar) <- c("opt")
@@ -273,6 +276,9 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       con      <- round( con, digits=10 )
       allvar   <- round( allvar, digits=10 )
       solution <- allvar[ 1 : nVar, 1 ]
+
+      if( iter1 >= maxiter ) result$status <- 4
+      if( iter2 >= maxiter ) result$status <- 5
    }
 
    ## List of Results
@@ -286,6 +292,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
    result$maximum  <- maximum
    result$Tab      <- Tab
    result$lpSolve  <- lpSolve
+   result$maxiter    <- maxiter
    class(result)   <- "solveLP"
    result
 }
