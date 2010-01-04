@@ -267,9 +267,3 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
    class(result)   <- "solveLP"
    result
 }
-
-## print the (summary) results
-summary.solveLP <- function(object,...) {
-  summary.solveLP <- object
-  summary.solveLP
-}
