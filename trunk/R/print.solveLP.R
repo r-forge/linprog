@@ -64,7 +64,7 @@ print.solveLP <- function( x, digits=6,... ) {
             "following error codes: ", object$lpStatus )
       }
    } else if( object$status == 3 ) {
-      print( result$con[ 1: 4 ] )
+      print( object$con[ 1: 4 ] )
       cat( "The Constraints are violated. This is most likely due to rounding errors" )
    } else if( object$status == 4 ) {
       cat( "Simplex algorithm Phase 1 did not succed" )
