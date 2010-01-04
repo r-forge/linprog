@@ -1,5 +1,5 @@
 solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
-                     zero=1e-10, lpSolve=FALSE, verbose=FALSE )
+                     zero=1e-10, lpSolve=FALSE, verbose = 0 )
 {
 
    result <- list()  # list for results that will be returned
@@ -60,7 +60,10 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
                  c( cvec, 0 ) )
       rownames(Tab) <- c( blab, "Z-C" )
       colnames(Tab) <- c( clab, "P0" )
-      if(verbose) print(Tab)
+      if( verbose >= 3 ) {
+         print("initial Tableau")
+         print(Tab)
+      }
 
       ## searching for feasible solution for starting
       # basis: Zero Solution ( Basic Variables = Slack Variables )
@@ -96,7 +99,10 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
                          Tab2[i, nVar+nCon+nArt+1] * Tab2[nCon+2, basis[i] ]
          }
          colnames(Tab2)[ nVar+nCon+nArt+1 ] <- "P0"
-         if(verbose) print(Tab2)
+         if( verbose >= 3 ) {
+            print("initial Tableau for Phase 1")
+            print(Tab2)
+         }
 
          ## Simplex algorithm (Phase 1)
          while( min( Tab2[ nCon+2, 1:(nVar+nCon+nArt) ] ) < 0 & iter1 < maxiter) {
@@ -107,10 +113,11 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
             rwerte  <- Tab2[ 1:nCon , nVar+nCon+nArt+1 ] / Tab2[ 1:nCon , pcolumn ] # R-values
             rwerte[ Tab2[1:nCon, pcolumn ] <= 0 ] <- max(rwerte)+1
             prow  <- which.min( rwerte )    # Pivot row
-            if(verbose) {
+            if( verbose >=2 ) {
                cat( paste( "\nPivot Column:", as.character(pcolumn),
                            "(",colnames(Tab2)[pcolumn],")\n" ) )
-               cat( paste( "Pivot Row:", as.character( prow ) ,"(",rownames(Tab2)[prow],")\n\n") )
+               cat( paste( "Pivot Row:", as.character( prow ),
+                  "(", rownames(Tab2)[prow], ")\n\n" ) )
             }
 
             ## New Basis
@@ -124,11 +131,14 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
                   Tab2[ i, ] <- Tab2[ i, ] - Tab2[ prow, ] * Tab2[ i, pcolumn ]
                }
             }
-            if(verbose) print(Tab2)
+            if( verbose >= 4 ) print(Tab2)
          }
          if(iter1 >= maxiter ) warning("Simplex algorithm (phase 1) did reach optimum.")
          Tab <- cbind( Tab2[ 1:(nCon+1), 1:(nCon+nVar) ], Tab2[ 1:(nCon+1), nVar+nCon+nArt+1 ] )
-         if(verbose) print(Tab)
+         if( verbose >= 3 ) {
+            print("New starting Tableau for Phase II")
+            print(Tab)
+         }
       }
       ## Simplex algorithm (Phase 2)
       while( min( Tab[ nCon+1, 1:(nVar+nCon) ] ) < 0  & iter2 < maxiter) {
@@ -139,10 +149,11 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
          rwerte  <- Tab[ 1:nCon , nVar+nCon+1 ] / Tab[ 1:nCon , pcolumn ]     # R-values
          rwerte[ Tab[1:nCon, pcolumn ] <= 0 ] <- max(rwerte)+1
          prow  <- which.min( rwerte )    # Pivot row
-         if(verbose) {
+         if( verbose >= 2 ) {
             cat( paste( "\nPivot Column:", as.character(pcolumn),
                         "(",colnames(Tab)[pcolumn],")\n" ) )
-            cat( paste( "Pivot Row:", as.character( prow ) ,"(",rownames(Tab)[prow],")\n\n") )
+            cat( paste( "Pivot Row:", as.character( prow ) ,
+               "(",rownames(Tab)[prow],")\n\n") )
          }
 
          ## New Basis
@@ -156,7 +167,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
                Tab[ i, ] <- Tab[ i, ] - Tab[ prow, ] * Tab[ i, pcolumn ]
             }
          }
-         if(verbose) print(Tab)
+         if( verbose >= 4 ) print(Tab)
       }
       if(iter2 >= maxiter ) warning("Simplex algorithm (phase 2) did reach optimum.")
       ## Results: Basic Variables

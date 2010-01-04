@@ -17,11 +17,11 @@ summary( result1a )
 print.default( result1a )
 
 # estimation with verbose = TRUE
-result1b <- solveLP( cvec, bvec, Amat, TRUE, verbose = TRUE )
+result1b <- solveLP( cvec, bvec, Amat, TRUE, verbose = 4 )
 all.equal( result1a, result1b )
 
 # estimation with lpSolve
-result1c <- solveLP( cvec, bvec, Amat, TRUE, lpSolve = TRUE, verbose = TRUE )
+result1c <- solveLP( cvec, bvec, Amat, TRUE, lpSolve = TRUE, verbose = 4 )
 print( result1c )
 # print summary results
 summary( result1c )
@@ -44,11 +44,11 @@ summary( result2a )
 print.default( result2a )
 
 # estimation with verbose = TRUE
-result2b <- solveLP( cvec, bvec, Amat, verbose = TRUE )
+result2b <- solveLP( cvec, bvec, Amat, verbose = 4 )
 all.equal( result1a, result1b )
 
 # estimation with lpSolve
-result2c <- solveLP( cvec, bvec, Amat, lpSolve = TRUE, verbose = TRUE )
+result2c <- solveLP( cvec, bvec, Amat, lpSolve = TRUE, verbose = 4 )
 print( result2c )
 # print summary results
 summary( result2c )

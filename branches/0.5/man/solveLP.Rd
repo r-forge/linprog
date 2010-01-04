@@ -9,7 +9,7 @@
 
 \usage{
    solveLP( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
-            zero=1e-10, lpSolve=FALSE, verbose=FALSE )
+            zero=1e-10, lpSolve=FALSE, verbose = 0 )
 }
 
 \arguments{
@@ -22,8 +22,9 @@
       set to zero.}
    \item{lpSolve}{logical. Should the package 'lpSolve' be used to solve
       the LP problem?}
-   \item{verbose}{an optional logic variable to indicate whether interim
-      results should be printed.}
+   \item{verbose}{an optional integer variable to indicate how many
+      intermediate results should be printed
+      (0 = no output; 4 = maximum output).}
 }
 
 \details{
