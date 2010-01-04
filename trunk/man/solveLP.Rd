@@ -113,8 +113,6 @@
 \examples{
 
 ## example of Steinhauser, Langbehn and Peters (1992)
-\dontrun{library( linprog )}
-
 ## Production activities
 cvec <- c(1800, 600, 600)  # gross margins
 names(cvec) <- c("Cows","Bulls","Pigs")
@@ -133,13 +131,11 @@ solveLP( cvec, bvec, Amat, TRUE )
 
 
 ## example 1.1.3 of Witte, Deppe and Born (1975)
-\dontrun{library( linprog )}
-
 ## Two types of Feed
 cvec <- c(2.5, 2 )  # prices of feed
 names(cvec) <- c("Feed1","Feed2")
 
-## Constraints (minimum (<0) and maximum (<0) contents)
+## Constraints (minimum (<0) and maximum (>0) contents)
 bvec <- c(-10, -1.5, 12)
 names(bvec) <- c("Protein","Fat","Fibre")
 
