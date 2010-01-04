@@ -4,7 +4,7 @@
 \title{ solve Linear Programming / Optimization problems }
 
 \description{
-  Minimizes \eqn{c'x}, subject to \eqn{A x <= b} and \eqn{x >= 0}.
+  Minimizes (or maximizes) \eqn{c'x}, subject to \eqn{A x <= b} and \eqn{x >= 0}.
 }
 
 \usage{
