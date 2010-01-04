@@ -24,7 +24,7 @@ writeMps( file, cvec, bvec, Amat, name="LP" )
    (e.g. \code{lp_solve}, see \url{ftp://ftp.es.ele.tue.nl/pub/lp_solve}).
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de}}
+\author{Arne Henningsen}
 
 \seealso{\code{\link{solveLP}}, \code{\link{readMps}}
 }
