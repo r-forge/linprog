@@ -14,6 +14,15 @@ print( result1a )
 # print all elements of the returned object
 print.default( result1a )
 
+# estimation with verbose = TRUE
+result1b <- solveLP( cvec, bvec, Amat, TRUE, verbose = TRUE )
+all.equal( result1a, result1b )
+
+# estimation with lpSolve
+result1c <- solveLP( cvec, bvec, Amat, TRUE, lpSolve = TRUE, verbose = TRUE )
+print( result1c )
+
+
 ## Example 2
 ## example 1.1.3 of Witte, Deppe and Born (1975)
 cvec <- c(2.5, 2 )  # prices of feed
@@ -27,3 +36,12 @@ result2a <- solveLP( cvec, bvec, Amat )
 print( result2a )
 # print all elements of the returned object
 print.default( result2a )
+
+# estimation with verbose = TRUE
+result2b <- solveLP( cvec, bvec, Amat, verbose = TRUE )
+all.equal( result1a, result1b )
+
+# estimation with lpSolve
+result2c <- solveLP( cvec, bvec, Amat, lpSolve = TRUE, verbose = TRUE )
+print( result2c )
+
