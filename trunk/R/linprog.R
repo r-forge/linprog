@@ -293,7 +293,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          }
       }
       ## Simplex algorithm (Phase 2)
-      while( min( Tab[ nCon+1, 1:(nVar+nCon) ] ) < -zero  & iter2 < maxiter & T ) {
+      while( min( Tab[ nCon+1, 1:(nVar+nCon) ] ) < -zero  & iter2 < maxiter ) {
          iter2 <- iter2 + 1
          ## Pivot
          Tab[ abs(Tab) < zero ] <- 0
