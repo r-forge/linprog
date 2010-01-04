@@ -448,7 +448,9 @@ readMps <- function( file, solve=FALSE, maximum=FALSE ) {
    if(solve) {
       res <- solveLP(cvec,bvec,Amat,maximum)
    }
-   return( name=name, cvec=cvec, bvec=bvec, Amat=Amat, res=res )
+
+   result <- list( name=name, cvec=cvec, bvec=bvec, Amat=Amat, res=res )
+   return( result )
 }
 
 writeMps <- function( file, cvec, bvec, Amat, name="LP" ) {
