@@ -59,10 +59,8 @@
 
   \item{opt}{optimal value (minimum or maximum) of the objective function.}
   \item{solution}{vector of optimal values of the variables.}
-  \item{iter1}{iterations of Simplex algorithm in phase 1
-            (is negative if it equals 'maxiter').}
-  \item{iter2}{iterations of Simplex algorithm in phase 2
-            (is negative if it equals 'maxiter').}
+  \item{iter1}{iterations of Simplex algorithm in phase 1.}
+  \item{iter2}{iterations of Simplex algorithm in phase 2.}
   \item{basvar}{vector of basic (=non-zero) variables (at optimum).}
   \item{con}{matrix of results regarding the constraints:\cr
             1st column = maximum values (=vector \eqn{b});\cr
@@ -77,11 +75,18 @@
             4th column = maximum of vector \eqn{c} that does \emph{not} change the solution;\cr
             5th column = derivatives to the objective function;\cr
             6th column = valid region for these derivatives.}
+   \item{status}{numeric. Indicates if the optimization did succeed:\cr
+      0 = success; 1 = lpSolve did not succeed;
+      4 = simplex algorithm phase 1 did not succeed;
+      5 = simplex algorithm phase 2 did not succeed.}
+   \item{lpStatus}{numeric. Return code of \code{\link[lpSolve]{lp}}
+      (only if it is non-zero).}
    \item{maximum}{logical. Indicates whether the objective function
             was maximized or minimized.}
    \item{Tab}{final 'Tableau' of the Simplex algorith.}
    \item{lpSolve}{logical. Has the package 'lpSolve' been used to solve
       the LP problem.}
+   \item{maxiter}{numeric. Argument \code{maxiter}.}
 }
 
 \references{
