@@ -37,7 +37,10 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       }
       lpres <- lp (direction = direction, cvec, Amat, rep("<=",length(bvec)), bvec )
 
-      result$status <- lpres$status
+      if( lpres$status != 0 ) {
+         result$status <- 1
+         result$lpStatus <- lpres$status
+      }
 
       solution  <- lpres$solution
       names( solution ) <- clab

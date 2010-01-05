@@ -46,8 +46,10 @@ print.solveLP <- function( x, digits=6,... ) {
          cat("\nAll Variables (including slack variables)\n")
          print( object$allvar )
       }
+   } else if( object$status == 1 ) {
+      cat( "lpSolve returned error code: ", object$lpStatus, "\n" )
    } else {
-      cat( "lpSolve returned only error codes: ", object$status )
+      cat( "unknown status ", object$status, "\n" )
    }
    if( object$status == 4 ) {
       cat( "Simplex algorithm Phase 1 did not succed" )
