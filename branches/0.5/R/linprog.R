@@ -45,9 +45,6 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       solution  <- lpres$solution
       names( solution ) <- clab
       objval    <- lpres$objval
-      Tab       <- NULL
-      iter1     <- NULL
-      iter2     <- NULL
       allvar    <- NULL
       basvar    <- NULL
 
@@ -291,6 +288,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
 
       result$iter1    <- iter1
       result$iter2    <- iter2
+      if( verbose >= 1 ) result$Tab <- Tab
       if( iter1 >= maxiter ) result$status <- 4
       if( iter2 >= maxiter ) result$status <- 5
    }
@@ -302,7 +300,6 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
    result$con      <- con
    result$allvar   <- allvar
    result$maximum  <- maximum
-   result$Tab      <- Tab
    result$lpSolve  <- lpSolve
    result$maxiter    <- maxiter
    class(result)   <- "solveLP"

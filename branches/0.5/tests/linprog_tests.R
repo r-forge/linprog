@@ -9,7 +9,7 @@ names(bvec) <- c("Land","Stable","Labor")
 Amat <- rbind( c(  0.7,   0.35,   0 ),
                c(  1.5,   1,      3 ),
                c( 50,    12.5,   20 ) )
-result1a <- solveLP( cvec, bvec, Amat, TRUE )
+result1a <- solveLP( cvec, bvec, Amat, TRUE, verbose = 1 )
 print( result1a )
 # print summary results
 summary( result1a )
@@ -38,7 +38,7 @@ names(bvec) <- c("Protein","Fat","Fibre")
 Amat <- rbind( c(-1.6,-2.4 ),
                c(-0.5,-0.2 ),
                c( 2.0, 2.0 ) )
-result2a <- solveLP( cvec, bvec, Amat )
+result2a <- solveLP( cvec, bvec, Amat, verbose = 1 )
 print( result2a )
 # print summary results
 summary( result2a )
