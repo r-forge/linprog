@@ -56,4 +56,5 @@ print.solveLP <- function( x, digits=6,... ) {
    }
 
    cat("\n")
+   invisible( x )
 }

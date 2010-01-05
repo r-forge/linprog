@@ -17,4 +17,5 @@ print.summary.solveLP <- function( x, ... ) {
    colnames( object$solution ) <- c("opt")
    print( object$solution )
    cat("\n")
+   invisible( x )
 }
