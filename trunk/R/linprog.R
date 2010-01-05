@@ -1,6 +1,6 @@
 solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
                const.dir = rep( "<=", length( bvec ) ),
-               maxiter=1000, maxiterLpSolve=20, zero=1e-9,
+               maxiter=1000, zero=1e-9,
                tol=1e-6, dualtol = tol, lpSolve=FALSE, solve.dual=FALSE, verbose=0 )
 {
 
@@ -57,45 +57,10 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          }
       }
 
-      result$lpStatus <- c( result$lpStatus, lpres$status )
-
       if( lpres$status != 0 ) {
-         iter <- 0
-         while( lpres$status != 0 && iter <= maxiterLpSolve ) {
-            iter <- iter + 1
-            if( round( iter / 2 ) != iter / 2 ) {
-               colPerm <- order( cvec == 0 ) # FALSE sorts before TRUE
-            } else {
-               colPerm <- sample( 1:length( cvec ) )
-            }
-            if( iter >= 2 ) {
-               rowPerm <- sample( 1:length( bvec ) )
-            } else {
-               rowPerm <- c( 1:length( bvec ) )
-            }
-            lpres <- lp( direction = direction, cvec[ colPerm ], Amat[ rowPerm, colPerm ],
-               const.dir, bvec[ rowPerm ] )
-            reColPerm <- apply( as.matrix(c( 1:length( colPerm ))), 1, match, colPerm )
-            lpres$solution <- lpres$solution[ reColPerm ]
-            if( lpres$status == 0 ) {
-               if( min( lpres$solution ) < -tol ) {
-                  lpres$status <- 7
-               } else if( max( round( bvec - c( Amat %*% lpres$solution ),
-                  digits=rdigits ) * ( -1 ) ) > tol ) {
-                  lpres$status <- 3
-               }
-            }
-            result$lpStatus <- c( result$lpStatus, lpres$status )
-         }
-         if( lpres$status == 0 ) {
-            warning( paste( "lpSolve returned solution after", as.character( iter ),
-               "permutation(s) of columns/rows (Error status:",
-               paste( as.character( result$lpStatus ), collapse=" " ), ")" ) )
-         } else {
-            result$status <- 1
-         }
-      }
-      if( result$status == 0 ) {
+         result$status <- 1
+         result$lpStatus <- lpres$status
+      } else  {
          result$solution            <- lpres$solution
          names( result$solution )   <- clab
          result$opt                 <- lpres$objval
@@ -107,6 +72,8 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          result$con$free[ const.dir2 == 1 ] <- -result$con$free[ const.dir2 == 1 ]
          result$con$free[ const.dir2 == 0 ] <- -abs( result$con$free[ const.dir2 == 0 ] )
       }
+
+      ## solving the dual problem
       if( result$status == 0 && solve.dual ) {
          if( sum( const.dir2 == 0 ) > 0 ) {
             stop( paste("At the moment the dual problem can not be solved with",
@@ -130,51 +97,9 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
                dualres$status <- 3
             }
          }
-         result$dualStatus <- c( result$dualStatus, dualres$status )
-
+         result$dualStatus <- dualres$status
          if( dualres$status == 0 ) {
             result$con$dual <- dualres$solution
-         } else {
-            iter <- 0
-            while( dualres$status != 0 && iter <= maxiterLpSolve ) {
-               iter <- iter + 1
-               if( round( iter / 2 ) != iter / 2 ) {
-                  colPerm <- order( bvec == 0 ) # FALSE sorts before TRUE
-               } else {
-                  colPerm <- sample( 1:length( bvec ) )
-               }
-               if( iter >= 2 ) {
-                  rowPerm <- sample( 1:length( cvec ) )
-               } else {
-                  rowPerm <- c( 1:length( cvec ) )
-               }
-               dualres <- lp( direction, ( bvec * const.dir2 * (-1)^maximum )[ colPerm ],
-                  t( Amat * const.dir2 )[ rowPerm, colPerm ] * (-1)^maximum, const.dir.dual,
-                  cvec[ rowPerm ] )
-               if( dualres$status == 0 ) {
-                  if( min( dualres$solution ) < -dualtol ) {
-                     dualres$status <- 7
-                  } else if( max( round( cvec[ rowPerm ] - c( ( t( Amat *
-                     const.dir2 )[ rowPerm, colPerm ] * (-1)^maximum ) %*%
-                     dualres$solution ), digits=rdigits ) *
-                     ( -1 )^(!maximum) ) > dualtol ) {
-                     dualres$status <- 3
-                  }
-               }
-               reColPerm <- apply( as.matrix(c( 1:length( colPerm ))), 1, match, colPerm )
-               dualres$solution <- dualres$solution[ reColPerm ]
-
-               result$dualStatus <- c( result$dualStatus, dualres$status )
-            }
-            if( dualres$status == 0 ) {
-               warning( paste( "lpSolve for the dual problem returned solution after",
-                  as.character( iter ), "permutation(s) of columns/rows (Error status:",
-                  paste( as.character( result$dualStatus ), collapse=" " ), ")" ) )
-               # reperm <- apply( c( 1:length( perm ) ), 1, match, perm )
-               result$con$dual <- dualres$solution
-            } else {
-               result$status <- 2
-            }
          }
       }
    } else {
