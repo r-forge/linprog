@@ -1,5 +1,6 @@
-solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
-                     zero=1e-10, lpSolve=FALSE, verbose = 0 )
+solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
+               const.dir = rep( "<=", length( bvec ) ),
+               maxiter=1000, zero=1e-10, lpSolve=FALSE, verbose = 0 )
 {
 
    result <- list()  # list for results that will be returned
@@ -14,6 +15,14 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       stop( paste( "Matrix A must have as many rows as constraints (=elements",
          "of vector b) and as many columns as variables (=elements of vector c).\n" ) )
    }
+   if( length( const.dir ) != nCon ) {
+      stop( paste( "'const.dir' must have as the elements as constraints",
+         "(=elements of vector b).\n" ) )
+   }
+   if( sum( const.dir == ">=" | const.dir == ">" | const.dir == "=" |
+         const.dir == "==" | const.dir == "<=" | const.dir == "<" ) < nCon ) {
+       stop( "'const.dir' may only contain '>=', '>', '=', '==', '<=' or '<'" )
+   }
 
    ## Labels
    if( is.null(names(cvec))) {
@@ -26,6 +35,9 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
    } else {
       blab <- names(bvec)
    }
+   const.dir2 <- rep( 0, nCon )
+   const.dir2[ const.dir == ">=" | const.dir == ">" ] <-  1
+   const.dir2[ const.dir == "<=" | const.dir == "<" ] <- -1
 
    ## lpSolve
    if( lpSolve ) {
@@ -35,41 +47,39 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       } else {
          direction <- "min"
       }
-      lpres <- lp (direction = direction, cvec, Amat, rep("<=",length(bvec)), bvec )
+      lpres <- lp( direction = direction, cvec, Amat, const.dir, bvec )
 
       if( lpres$status != 0 ) {
          result$status <- 1
          result$lpStatus <- lpres$status
+      } else  {
+         solution  <- lpres$solution
+         names( solution ) <- clab
+         objval    <- lpres$objval
+         allvar    <- NULL
+         basvar    <- NULL
+
+         ## Results: Constraints
+         con <- data.frame( actual=NA, dir=const.dir, bvec=bvec, free=NA )
+         con$actual <- round( c( Amat %*% solution ), digits=rdigits )
+         names( con$actual ) <- blab
+         con$free   <- round( con$bvec - con$actual, digits=rdigits )
+         con$free[ const.dir2 == 1 ] <- -con$free[ const.dir2 == 1 ]
+         con$free[ const.dir2 == 0 ] <- -abs( con$free[ const.dir2 == 0 ] )
       }
-
-      solution  <- lpres$solution
-      names( solution ) <- clab
-      objval    <- lpres$objval
-      allvar    <- NULL
-      basvar    <- NULL
-
-      ## Results: Constraints
-      con <- matrix( NA, nCon, 3 )
-      colnames(con) <- c( "max", "actual", "diff" )
-      rownames(con) <- blab
-      con[ , 1 ] <- bvec
-      con[ , 2 ] <- round( c( Amat %*% solution ), digits = rdigits )
-      con[ , 3 ] <- con[ , 1 ] - con[ , 2 ]
 
    } else {
       ## Simplex algorithm
       iter1 <- 0
       iter2 <- 0
 
-      if(maximum) cvec <- -cvec
-
       ## Slack Variables
       for(i in 1:nCon) clab <- c( clab, paste("S", blab[i] ) )
-      cvec <- c( cvec, rep( 0, nCon ) )
+      cvec2 <- c( cvec, rep( 0, nCon ) )
 
       ## Tableau ( Basic Variables, Slack,Variables, P0, Z-C )
-      Tab <- rbind( cbind( Amat, diag( 1, nCon, nCon ), bvec ),
-                 c( cvec, 0 ) )
+      Tab <- rbind( cbind( -Amat * const.dir2, diag( 1, nCon, nCon ), -bvec * const.dir2 ),
+                 c( cvec2 * (-1)^maximum, 0 ) )
       rownames(Tab) <- c( blab, "Z-C" )
       colnames(Tab) <- c( clab, "P0" )
       if( verbose >= 3 ) {
@@ -117,13 +127,31 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
          }
 
          ## Simplex algorithm (Phase 1)
-         while( min( Tab2[ nCon+2, 1:(nVar+nCon+nArt) ] ) < 0 & iter1 < maxiter) {
+         while( min( Tab2[ nCon+2, 1:(nVar+nCon+nArt) ] ) < -zero & iter1 < maxiter) {
             iter1 <- iter1 + 1
-            ## Pivot
+           ## Pivot
             Tab[ abs(Tab) < zero ] <- 0
-            pcolumn <- which.min( Tab2[ nCon+2, 1:(nVar+nCon+nArt) ]) # Pivot column
+#            pcolumn <- which.min( Tab2[ nCon+2, 1:(nVar+nCon+nArt) ]) # Pivot column
+            decval <- array( NA, nVar+nCon )
+            for( pcolumnt in 1:(nVar+nCon+nArt) ) {
+               if( Tab2[ nCon+2, pcolumnt ] < 0 ) {
+                  rwerte  <- Tab2[ 1:nCon, nVar+nCon+nArt+1 ] / Tab2[ 1:nCon , pcolumnt ]
+                       # R-values
+                  rwerte[ Tab2[1:nCon, pcolumnt ] <= 0 ] <- max(rwerte,na.rm=TRUE)+1
+                  prow  <- which.min( rwerte )    # Pivot row
+                  if( length( rwerte[ !is.na(rwerte) & is.finite(rwerte) ] ) >= 1 ) {
+                     decval[ pcolumnt ] <- Tab2[ nCon+2, pcolumnt ] *
+                           min( rwerte[ !is.na(rwerte) & is.finite(rwerte) ] )
+                  }
+               }
+            }
+            if( min( decval, na.rm=TRUE ) < -zero ) {
+               pcolumn <- which.min( decval ) # Pivot column
+            } else {
+               pcolumn <- which.min( Tab2[ nCon+2, 1:(nVar+nCon+nArt) ]) # Pivot column
+            }
             rwerte  <- Tab2[ 1:nCon , nVar+nCon+nArt+1 ] / Tab2[ 1:nCon , pcolumn ] # R-values
-            rwerte[ Tab2[1:nCon, pcolumn ] <= 0 ] <- max(rwerte)+1
+            rwerte[ Tab2[1:nCon, pcolumn ] <= 0 ] <- max(rwerte, na.rm=TRUE)+1
             prow  <- which.min( rwerte )    # Pivot row
             if( verbose >=2 ) {
                cat( paste( "\nPivot Column:", as.character(pcolumn),
@@ -146,20 +174,39 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
             if( verbose >= 4 ) print(Tab2)
          }
          if(iter1 >= maxiter ) warning("Simplex algorithm (phase 1) did not reach optimum.")
-         Tab <- cbind( Tab2[ 1:(nCon+1), 1:(nCon+nVar) ], Tab2[ 1:(nCon+1), nVar+nCon+nArt+1 ] )
+         Tab <- cbind( Tab2[ 1:(nCon+1), 1:(nCon+nVar) ],
+            Tab2[ 1:(nCon+1), nVar+nCon+nArt+1 ] )
          if( verbose >= 3 ) {
             print("New starting Tableau for Phase II")
             print(Tab)
          }
       }
       ## Simplex algorithm (Phase 2)
-      while( min( Tab[ nCon+1, 1:(nVar+nCon) ] ) < 0  & iter2 < maxiter) {
+      while( min( Tab[ nCon+1, 1:(nVar+nCon) ] ) < -zero  & iter2 < maxiter ) {
          iter2 <- iter2 + 1
          ## Pivot
          Tab[ abs(Tab) < zero ] <- 0
-         pcolumn <- which.min( Tab[ nCon+1, 1:(nVar+nCon) ]) # Pivot column
+#         pcolumn <- which.min( Tab[ nCon+1, 1:(nVar+nCon) ]) # Pivot column
+         decval <- array( NA, nVar+nCon )
+         for( pcolumnt in 1:(nVar+nCon) ) {
+            if( Tab[ nCon+1, pcolumnt ] < 0 ) {
+               rwerte  <- Tab[ 1:nCon , nVar+nCon+1 ] / Tab[ 1:nCon , pcolumnt ]
+                    # R-values
+               rwerte[ Tab[1:nCon, pcolumnt ] <= 0 ] <- max(rwerte,na.rm=TRUE)+1
+               prow  <- which.min( rwerte )    # Pivot row
+               if( length( rwerte[ !is.na(rwerte) & is.finite(rwerte) ] ) >= 1 ) {
+                  decval[ pcolumnt ] <- Tab[ nCon+1, pcolumnt ] *
+                        min( rwerte[ !is.na(rwerte) & is.finite(rwerte) ] )
+               }
+            }
+         }
+         if( min( decval, na.rm=TRUE ) < -zero ) {
+            pcolumn <- which.min( decval ) # Pivot column
+         } else {
+            pcolumn <- which.min( Tab[ nCon+1, 1:(nVar+nCon) ]) # Pivot column
+         }
          rwerte  <- Tab[ 1:nCon , nVar+nCon+1 ] / Tab[ 1:nCon , pcolumn ]     # R-values
-         rwerte[ Tab[1:nCon, pcolumn ] <= 0 ] <- max(rwerte)+1
+         rwerte[ Tab[1:nCon, pcolumn ] <= 0 ] <- max(rwerte,na.rm=TRUE)+1
          prow  <- which.min( rwerte )    # Pivot row
          if( verbose >= 2 ) {
             cat( paste( "\nPivot Column:", as.character(pcolumn),
@@ -192,97 +239,111 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
       }
 
       ## Results: All Variables (Including Slack Variables)
-      allvar <- matrix( NA, nVar+nCon, 6 )
-      colnames(allvar) <- c("opt", "c", "min c","max c","marg.", "marg.reg." )
+      allvar <- data.frame( opt=rep( NA, nVar+nCon ), cvec=cvec2, min.c=NA,
+                              max.c=NA, marg=NA, marg.reg=NA )
       rownames(allvar) <- clab
       for( i in 1:(nVar+nCon) ) {
          if(i %in% basis ) {
-            allvar[i,1] <- Tab[ which(basis==i), nVar+nCon+1 ]
+            allvar$opt[ i ] <- Tab[ which(basis==i), nVar+nCon+1 ]
             ## Stability of Basic Variables
             quot <- Tab[ nCon+1, 1:(nVar+nCon) ] / Tab[ which(basis==i), 1:(nVar+nCon) ]
-            if(maximum) {
+            if( maximum ) {
                if(max(quot[!is.na(quot)]) > 0 ) {
                   op <- options()
                   options(warn=-1)
-                  allvar[i,3] <- -cvec[ i ] - min(quot[quot>0 & !is.na(quot)])
+                  allvar$min.c[ i ] <- cvec2[ i ] - min(quot[quot>0 & !is.na(quot)])
                   options(op)
                }
-               if(min(quot[!is.na(quot)]) < 0 ) {
+               if(min(quot[!is.na(quot) & is.finite(quot)]) < 0 ) {
                   if(max(quot[quot<0 & !is.na(quot)]) > -1e14 ) {
-                     allvar[i,4] <- -cvec[ i ] - max(quot[quot<0 & !is.na(quot)])
+                     allvar$max.c[ i ] <- cvec2[ i ] - max(quot[quot<0 & !is.na(quot)])
                   } else {
-                     allvar[i,4] <- Inf
+                     allvar$max.c[ i ] <- Inf
                   }
                } else {
-                  allvar[i,4] <- Inf
+                  allvar$max.c[ i ] <- Inf
                }
             } else {
                if(max(quot[!is.na(quot)]) > 0 ) {
-                  allvar[i,4] <- cvec[ i ] + min(quot[quot>0 & !is.na(quot)])
+                  op <- options()
+                  options(warn=-1)
+                  allvar$max.c[ i ] <- cvec2[ i ] + min(quot[quot>0 & !is.na(quot)])
+                  options(op)
                }
                if(min(quot[!is.na(quot)]) < 0 ) {
                   if(max(quot[quot<0 & !is.na(quot)]) > -1e14 ){
-                     allvar[i,3] <- cvec[ i ] + max(quot[quot<0 & !is.na(quot)])
+                     allvar$min.c[ i ] <- -cvec2[ i ] + max(quot[quot<0 & !is.na(quot)])
                   } else {
-                     allvar[i,3] <- -Inf
+                     allvar$min.c[ i ] <- NA
                   }
                } else {
-                  allvar[i,3] <- -Inf
+                  allvar$min.c[ i ] <- NA
                }
             }
          } else {
-            allvar[i,1] <- 0
-            if( i <= nVar ) {
-               if(maximum) {
-                  allvar[i,3] <- -Inf
-                  allvar[i,4] <- Tab[ nCon+1, i ] - cvec[i]
-               } else {
-                  allvar[i,3] <- -Tab[ nCon+1, i ] + cvec[i]
-                  allvar[i,4] <- Inf
-               }
-            }
+             allvar$opt[ i ] <- 0
+             if( i <= nVar ) {
+                if( maximum ) {
+                   allvar$min.c[ i ] <- -Inf
+                   allvar$max.c[ i ] <- Tab[ nCon+1, i ] + cvec2[i]
+                } else {
+                   allvar$min.c[ i ] <- 99#-Tab[ nCon+1, i ] - cvec2[i]
+                   allvar$max.c[ i ] <- 77#Inf
+                }
+             }
          }
-         if(maximum) {
-            allvar[i,2] <- -cvec[i]
-         } else {
-            allvar[i,2] <- cvec[i]
-         }
+         allvar$cvec[ i ] <- cvec2[ i ]
+
          # marginal contribution to objective function (Shadow prices)
          if( !( ( i %in% basis ) & ( i <= nVar ) ) ) {
-            allvar[ i, 5] <- Tab[ nCon+1, i ] * (-1)^maximum
+            allvar$marg[ i ] <- Tab[ nCon+1, i ] * (-1)^maximum
+            if( !( i %in% basis ) & ( i > nVar ) ) {
+               if( maximum ) {
+                  allvar$max.c[ i ] <- Tab[ nCon+1, i ] #* (-1)^maximum
+                  allvar$min.c[ i ] <- -Inf
+               } else {
+                  allvar$min.c[ i ] <- -Tab[ nCon+1, i ]
+                  allvar$max.c[ i ] <-  Inf
+               }
+            }
             quot <- Tab[ 1:nCon , nVar+nCon+1 ] / Tab[ 1:nCon, i ]
             op <- options()
             options(warn=-1)
-            if(min(quot[quot>0 & !is.na(quot)]) != Inf ) {
-               allvar[i,6] <- min(quot[quot>0 & !is.na(quot)])
+            if( !( i %in% basis) ) {
+               allvar$marg.reg[ i ] <- min(quot[quot>0 & !is.na(quot)])
             } else {
-               allvar[i,6] <- NA
+               allvar$marg.reg[ i ] <- NA
             }
             options(op)
          }
       }
-      allvar[ (allvar[,3] >  1e16), 3 ] <-  Inf
-      allvar[ (allvar[,3] < -1e16), 3 ] <- -Inf
+      allvar$min.c[ allvar$min.c >  1e16 ] <-  Inf
+      allvar$min.c[ allvar$min.c < -1e16 ] <- -Inf
 
       ## Results: Constraints
-      con <- matrix( NA, nCon, 5 )
-      colnames(con) <- c("max", "actual", "diff", "dual price","dual.reg")
-      rownames(con) <- blab
-      con[ , 1 ] <- bvec
+      con <- data.frame( actual=NA, dir=const.dir, bvec=bvec, free=NA, dual=NA, dual.reg=NA )
+      names( con$actual ) <- blab
       for(i in 1: nCon) {
          if( (i+nVar) %in% basis ) {
-            con[ i, 2 ] <- bvec[i] - Tab[ which((i+nVar)==basis), nVar+nCon+1 ]
+            con$actual[ i ] <- round( bvec[i] + Tab[ which((i+nVar)==basis),
+                                 nVar+nCon+1 ] * const.dir2[ i ], digits=rdigits )
          } else {
-            con[ i, 2 ] <- bvec[i]
+            con$actual[ i ] <- round( bvec[i], digits=rdigits )
          }
-         con[ i, 4 ] <- -allvar[ i+nVar , 5 ]
-         con[ i, 5 ] <-  allvar[ i+nVar , 6 ]
+         if( -allvar$opt[ i+nVar ] == 0 ) {
+            con$dual[ i ]     <- allvar$marg[ i+nVar ] * (-1)^maximum
+            con$dual.reg[ i ] <- allvar$marg.reg[ i+nVar ]
+         } else {
+            con$dual[ i ]     <- 0
+            con$dual.reg[ i ] <- allvar$opt[ i+nVar ]
+         }
       }
-      con[ , 3 ] <- con[ , 1 ] - con[ , 2 ]
+      con$free <- round( con$bvec - con$actual, digits=rdigits )
+      con$free[ const.dir2 == 1 ] <- -con$free[ const.dir2 == 1 ]
+      con$free[ const.dir2 == 0 ] <- -abs( con$free[ const.dir2 == 0 ] )
 
       objval   <- -Tab[ nCon+1, nCon+nVar+1 ] * (-1)^maximum
       basvar   <- round( basvar, digits=10 )
-      con      <- round( con, digits=10 )
       allvar   <- round( allvar, digits=10 )
       solution <- allvar[ 1 : nVar, 1 ]
 
@@ -296,6 +357,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
    ## List of Results
    result$opt      <- round( objval, digits=10 )
    result$solution <- solution
+   names( result$solution ) <- clab[ 1: nVar ]
    result$basvar   <- basvar
    result$con      <- con
    result$allvar   <- allvar

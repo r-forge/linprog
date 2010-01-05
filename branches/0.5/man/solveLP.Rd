@@ -5,11 +5,15 @@
 
 \description{
   Minimizes (or maximizes) \eqn{c'x}, subject to \eqn{A x <= b} and \eqn{x >= 0}.
+
+Note that the inequality signs \code{<=} of the individual linear constraints
+in \eqn{A x <= b} can be changed with argument \code{const.dir}.
 }
 
 \usage{
-   solveLP( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
-            zero=1e-10, lpSolve=FALSE, verbose = 0 )
+solveLP( cvec, bvec, Amat, maximum=FALSE,
+   const.dir = rep( "<=", length( bvec ) ),
+   maxiter=1000, zero=1e-10, lpSolve=FALSE, verbose = 0 )
 }
 
 \arguments{
@@ -17,6 +21,9 @@
    \item{bvec}{vector \eqn{b} (containing \eqn{m} elements).}
    \item{Amat}{matrix A (of dimension \eqn{m \times n}).}
    \item{maximum}{logical. Should we maximize or minimize (the default)?}
+   \item{const.dir}{vector of character strings giving the directions
+      of the constraints: each value should be one of "<," "<=," "=," "==,"
+      ">," or ">=". (In each pair the two values are identical.)}
    \item{maxiter}{maximum number of iterations.}
    \item{zero}{numbers smaller than this value (in absolute terms) are
       set to zero.}
@@ -150,6 +157,9 @@ Amat <- rbind( c( -1.6,  -2.4 ),
 
 ## Minimize the cost
 solveLP( cvec, bvec, Amat )
+
+# the same optimisation using argument const.dir
+solveLP( cvec, abs( bvec ), abs( Amat ), const.dir = c( ">=", ">=", "<=" ) )
 
 
 ## There are also several other ways to put the data into the arrays, e.g.:

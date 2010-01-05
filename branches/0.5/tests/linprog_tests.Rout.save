@@ -50,19 +50,19 @@ Bulls  24.0
 S Land  0.8
 
 Constraints
-        max actual diff dual price dual.reg
-Land     40   39.2  0.8        0.0      0.8
-Stable   90   90.0  0.0      240.0     15.0
-Labor  2500 2500.0  0.0       28.8   1375.0
+       actual dir bvec free  dual dual.reg
+Land     39.2  <=   40  0.8   0.0      0.8
+Stable   90.0  <=   90  0.0 240.0     15.0
+Labor  2500.0  <= 2500  0.0  28.8   1375.0
 
 All Variables (including slack variables)
-          opt    c min c    max c  marg. marg.reg.
-Cows     44.0 1800   900 2400.000     NA        NA
-Bulls    24.0  600   450 1200.000     NA        NA
-Pigs      0.0  600  -Inf 1296.000 -696.0      6.25
-S Land    0.8    0    NA  731.092    0.0      0.80
-S Stable  0.0    0    NA       NA -240.0     15.00
-S Labor   0.0    0    NA       NA  -28.8   1375.00
+          opt cvec min.c    max.c   marg marg.reg
+Cows     44.0 1800   900 2400.000     NA       NA
+Bulls    24.0  600   450 1200.000     NA       NA
+Pigs      0.0  600  -Inf 1296.000 -696.0     6.25
+S Land    0.8    0    NA  731.092    0.0       NA
+S Stable  0.0    0  -Inf  240.000 -240.0    15.00
+S Labor   0.0    0  -Inf   28.800  -28.8  1375.00
 
 > # print summary results
 > summary( result1a )
@@ -110,19 +110,19 @@ Bulls  24.0
 S Land  0.8
 
 $con
-        max actual diff dual price dual.reg
-Land     40   39.2  0.8        0.0      0.8
-Stable   90   90.0  0.0      240.0     15.0
-Labor  2500 2500.0  0.0       28.8   1375.0
+       actual dir bvec free  dual dual.reg
+Land     39.2  <=   40  0.8   0.0      0.8
+Stable   90.0  <=   90  0.0 240.0     15.0
+Labor  2500.0  <= 2500  0.0  28.8   1375.0
 
 $allvar
-          opt    c min c     max c  marg. marg.reg.
-Cows     44.0 1800   900 2400.0000     NA        NA
-Bulls    24.0  600   450 1200.0000     NA        NA
-Pigs      0.0  600  -Inf 1296.0000 -696.0      6.25
-S Land    0.8    0    NA  731.0924    0.0      0.80
-S Stable  0.0    0    NA        NA -240.0     15.00
-S Labor   0.0    0    NA        NA  -28.8   1375.00
+          opt cvec min.c     max.c   marg marg.reg
+Cows     44.0 1800   900 2400.0000     NA       NA
+Bulls    24.0  600   450 1200.0000     NA       NA
+Pigs      0.0  600  -Inf 1296.0000 -696.0     6.25
+S Land    0.8    0    NA  731.0924    0.0       NA
+S Stable  0.0    0  -Inf  240.0000 -240.0    15.00
+S Labor   0.0    0  -Inf   28.8000  -28.8  1375.00
 
 $maximum
 [1] TRUE
@@ -182,10 +182,10 @@ Bulls  24
 Pigs    0
 
 Constraints
-        max actual diff
-Land     40   39.2  0.8
-Stable   90   90.0  0.0
-Labor  2500 2500.0  0.0
+       actual dir bvec free
+Land     39.2  <=   40  0.8
+Stable   90.0  <=   90  0.0
+Labor  2500.0  <= 2500  0.0
 
 > # print summary results
 > summary( result1c )
@@ -214,10 +214,10 @@ $solution
    44    24     0 
 
 $con
-        max actual diff
-Land     40   39.2  0.8
-Stable   90   90.0  0.0
-Labor  2500 2500.0  0.0
+       actual dir bvec free
+Land     39.2  <=   40  0.8
+Stable   90.0  <=   90  0.0
+Labor  2500.0  <= 2500  0.0
 
 $maximum
 [1] TRUE
@@ -230,6 +230,75 @@ $maxiter
 
 attr(,"class")
 [1] "solveLP"
+> 
+> # using argument const.dir
+> const.dir <- c( ">=", ">=", ">=" )
+> result1d <- solveLP( cvec, -bvec, -Amat, maximum = TRUE, verbose = 1,
++    const.dir = const.dir )
+> print( result1d )
+
+
+Results of Linear Programming / Linear Optimization
+
+Objective function (Maximum): 93600 
+
+Iterations in phase 1: 0
+Iterations in phase 2: 2
+Solution
+      opt
+Cows   44
+Bulls  24
+Pigs    0
+
+Basic Variables
+        opt
+Cows   44.0
+Bulls  24.0
+S Land  0.8
+
+Constraints
+        actual dir  bvec free  dual dual.reg
+Land     -39.2  >=   -40  0.8   0.0      0.8
+Stable   -90.0  >=   -90  0.0 240.0     15.0
+Labor  -2500.0  >= -2500  0.0  28.8   1375.0
+
+All Variables (including slack variables)
+          opt cvec min.c    max.c   marg marg.reg
+Cows     44.0 1800   900 2400.000     NA       NA
+Bulls    24.0  600   450 1200.000     NA       NA
+Pigs      0.0  600  -Inf 1296.000 -696.0     6.25
+S Land    0.8    0    NA  731.092    0.0       NA
+S Stable  0.0    0  -Inf  240.000 -240.0    15.00
+S Labor   0.0    0  -Inf   28.800  -28.8  1375.00
+
+> all.equal( result1a[-8], result1d[-8] )
+[1] TRUE
+> 
+> # using argument const.dir and lpSolve
+> result1e <-solveLP( cvec, -bvec, -Amat, maximum = TRUE, verbose = 1,
++    const.dir = const.dir, lpSolve = TRUE )
+> print( result1e )
+
+
+Results of Linear Programming / Linear Optimization
+(using lpSolve)
+
+Objective function (Maximum): 93600 
+
+Solution
+      opt
+Cows   44
+Bulls  24
+Pigs    0
+
+Constraints
+        actual dir  bvec free
+Land     -39.2  >=   -40  0.8
+Stable   -90.0  >=   -90  0.0
+Labor  -2500.0  >= -2500  0.0
+
+> all.equal( result1c[-4], result1e[-4] )
+[1] TRUE
 > 
 > 
 > ## Example 2
@@ -249,8 +318,8 @@ Results of Linear Programming / Linear Optimization
 
 Objective function (Minimum): 10.4545 
 
-Iterations in phase 1: 3
-Iterations in phase 2: 1
+Iterations in phase 1: 2
+Iterations in phase 2: 0
 Solution
           opt
 Feed1 1.81818
@@ -263,18 +332,18 @@ Feed2   2.95455
 S Fibre 2.45455
 
 Constraints
-          max    actual    diff dual price dual.reg
-Protein -10.0 -10.00000 0.00000  -0.568182  3.60000
-Fat      -1.5  -1.50000 0.00000  -3.181818  1.35000
-Fibre    12.0   9.54545 2.45455   0.000000  2.45455
+           actual dir  bvec    free     dual dual.reg
+Protein -10.00000  <= -10.0 0.00000 0.568182  3.60000
+Fat      -1.50000  <=  -1.5 0.00000 3.181818  1.35000
+Fibre     9.54545  <=  12.0 2.45455 0.000000  2.45455
 
 All Variables (including slack variables)
-              opt   c   min c    max c    marg. marg.reg.
-Feed1     1.81818 2.5 1.33333 5.000000       NA        NA
-Feed2     2.95455 2.0 1.00000 3.750000       NA        NA
-S Protein 0.00000 0.0      NA       NA 0.568182   3.60000
-S Fat     0.00000 0.0      NA       NA 3.181818   1.35000
-S Fibre   2.45455 0.0    -Inf 0.833333 0.000000   2.45455
+              opt cvec     min.c    max.c     marg marg.reg
+Feed1     1.81818  2.5 -3.666667 5.000000       NA       NA
+Feed2     2.95455  2.0 -3.000000 3.750000       NA       NA
+S Protein 0.00000  0.0 -0.568182      Inf 0.568182     3.60
+S Fat     0.00000  0.0 -3.181818      Inf 3.181818     1.35
+S Fibre   2.45455  0.0        NA 0.833333 0.000000       NA
 
 > # print summary results
 > summary( result2a )
@@ -295,17 +364,17 @@ $status
 [1] 0
 
 $iter1
-[1] 3
+[1] 2
 
 $iter2
-[1] 1
+[1] 0
 
 $Tab
-        Feed1 Feed2  S Protein     S Fat S Fibre           
-Feed2       0     1 -0.5681818  1.818182       0   2.954545
-Feed1       1     0  0.2272727 -2.727273       0   1.818182
-S Fibre     0     0  0.6818182  1.818182       1   2.454545
-Z-C         0     0  0.5681818  3.181818       0 -10.454545
+      Feed1 Feed2  S Protein     S Fat S Fibre           
+Feed2     0     1 -0.5681818  1.818182       0   2.954545
+Feed1     1     0  0.2272727 -2.727273       0   1.818182
+Fibre     0     0  0.6818182  1.818182       1   2.454545
+Z-C       0     0  0.5681818  3.181818       0 -10.454545
 
 $opt
 [1] 10.45455
@@ -321,18 +390,18 @@ Feed2   2.954545
 S Fibre 2.454545
 
 $con
-          max     actual     diff dual price dual.reg
-Protein -10.0 -10.000000 0.000000 -0.5681818 3.600000
-Fat      -1.5  -1.500000 0.000000 -3.1818182 1.350000
-Fibre    12.0   9.545455 2.454545  0.0000000 2.454545
+            actual dir  bvec     free      dual dual.reg
+Protein -10.000000  <= -10.0 0.000000 0.5681818 3.600000
+Fat      -1.500000  <=  -1.5 0.000000 3.1818182 1.350000
+Fibre     9.545455  <=  12.0 2.454545 0.0000000 2.454545
 
 $allvar
-               opt   c    min c     max c     marg. marg.reg.
-Feed1     1.818182 2.5 1.333333 5.0000000        NA        NA
-Feed2     2.954545 2.0 1.000000 3.7500000        NA        NA
-S Protein 0.000000 0.0       NA        NA 0.5681818  3.600000
-S Fat     0.000000 0.0       NA        NA 3.1818182  1.350000
-S Fibre   2.454545 0.0     -Inf 0.8333333 0.0000000  2.454545
+               opt cvec      min.c     max.c      marg marg.reg
+Feed1     1.818182  2.5 -3.6666667 5.0000000        NA       NA
+Feed2     2.954545  2.0 -3.0000000 3.7500000        NA       NA
+S Protein 0.000000  0.0 -0.5681818       Inf 0.5681818     3.60
+S Fat     0.000000  0.0 -3.1818182       Inf 3.1818182     1.35
+S Fibre   2.454545  0.0         NA 0.8333333 0.0000000       NA
 
 $maximum
 [1] FALSE
@@ -387,37 +456,12 @@ Feed1  1.818182e+00
 Fibre  2.454545e+00
 Z-C   -1.045455e+01
 M Z-C  1.110223e-16
-
-Pivot Column: 3 ( S Protein )
-Pivot Row: 3 ( Fibre )
-
-          Feed1 Feed2 S Protein         S Fat       S Fibre M Protein     M Fat
-Feed2         0     1         0  3.333333e+00  8.333333e-01         0 -3.333333
-Feed1         1     0         0 -3.333333e+00 -3.333333e-01         0  3.333333
-S Protein     0     0         1  2.666667e+00  1.466667e+00        -1 -2.666667
-Z-C           0     0         0  1.666667e+00 -8.333333e-01         0 -1.666667
-M Z-C         0     0         0  9.251859e-16  2.646032e-16         1  1.000000
-                     P0
-Feed2      5.000000e+00
-Feed1      1.000000e+00
-S Protein  3.600000e+00
-Z-C       -1.250000e+01
-M Z-C      7.605028e-16
 [1] "New starting Tableau for Phase II"
-          Feed1 Feed2 S Protein     S Fat    S Fibre      
-Feed2         0     1         0  3.333333  0.8333333   5.0
-Feed1         1     0         0 -3.333333 -0.3333333   1.0
-S Protein     0     0         1  2.666667  1.4666667   3.6
-Z-C           0     0         0  1.666667 -0.8333333 -12.5
-
-Pivot Column: 5 ( S Fibre )
-Pivot Row: 3 ( S Protein )
-
-        Feed1 Feed2  S Protein     S Fat S Fibre           
-Feed2       0     1 -0.5681818  1.818182       0   2.954545
-Feed1       1     0  0.2272727 -2.727273       0   1.818182
-S Fibre     0     0  0.6818182  1.818182       1   2.454545
-Z-C         0     0  0.5681818  3.181818       0 -10.454545
+      Feed1 Feed2  S Protein     S Fat S Fibre           
+Feed2     0     1 -0.5681818  1.818182       0   2.954545
+Feed1     1     0  0.2272727 -2.727273       0   1.818182
+Fibre     0     0  0.6818182  1.818182       1   2.454545
+Z-C       0     0  0.5681818  3.181818       0 -10.454545
 > all.equal( result1a, result1b )
 [1] TRUE
 > 
@@ -437,10 +481,10 @@ Feed1 1.81818
 Feed2 2.95455
 
 Constraints
-          max    actual    diff
-Protein -10.0 -10.00000 0.00000
-Fat      -1.5  -1.50000 0.00000
-Fibre    12.0   9.54545 2.45455
+           actual dir  bvec    free
+Protein -10.00000  <= -10.0 0.00000
+Fat      -1.50000  <=  -1.5 0.00000
+Fibre     9.54545  <=  12.0 2.45455
 
 > # print summary results
 > summary( result2c )
@@ -468,10 +512,10 @@ $solution
 1.818182 2.954545 
 
 $con
-          max     actual     diff
-Protein -10.0 -10.000000 0.000000
-Fat      -1.5  -1.500000 0.000000
-Fibre    12.0   9.545455 2.454545
+            actual dir  bvec     free
+Protein -10.000000  <= -10.0 0.000000
+Fat      -1.500000  <=  -1.5 0.000000
+Fibre     9.545455  <=  12.0 2.454545
 
 $maximum
 [1] FALSE
@@ -484,5 +528,72 @@ $maxiter
 
 attr(,"class")
 [1] "solveLP"
+> 
+> # using argument const.dir
+> const.dir <- c( ">=", ">=", "<=" )
+> result2d <- solveLP( cvec, abs( bvec ), abs( Amat ), verbose = 1,
++    const.dir = const.dir )
+> print( result2d )
+
+
+Results of Linear Programming / Linear Optimization
+
+Objective function (Minimum): 10.4545 
+
+Iterations in phase 1: 2
+Iterations in phase 2: 0
+Solution
+          opt
+Feed1 1.81818
+Feed2 2.95455
+
+Basic Variables
+            opt
+Feed1   1.81818
+Feed2   2.95455
+S Fibre 2.45455
+
+Constraints
+          actual dir bvec    free     dual dual.reg
+Protein 10.00000  >= 10.0 0.00000 0.568182  3.60000
+Fat      1.50000  >=  1.5 0.00000 3.181818  1.35000
+Fibre    9.54545  <= 12.0 2.45455 0.000000  2.45455
+
+All Variables (including slack variables)
+              opt cvec     min.c    max.c     marg marg.reg
+Feed1     1.81818  2.5 -3.666667 5.000000       NA       NA
+Feed2     2.95455  2.0 -3.000000 3.750000       NA       NA
+S Protein 0.00000  0.0 -0.568182      Inf 0.568182     3.60
+S Fat     0.00000  0.0 -3.181818      Inf 3.181818     1.35
+S Fibre   2.45455  0.0        NA 0.833333 0.000000       NA
+
+> all.equal( result2a[-8], result2d[-8] )
+[1] TRUE
+> 
+> # using argument const.dir and lpSolve
+> result2e <- solveLP( cvec, abs( bvec ), abs( Amat ), verbose = 1,
++    const.dir = const.dir, lpSolve = TRUE )
+> print( result2e )
+
+
+Results of Linear Programming / Linear Optimization
+(using lpSolve)
+
+Objective function (Minimum): 10.4545 
+
+Solution
+          opt
+Feed1 1.81818
+Feed2 2.95455
+
+Constraints
+          actual dir bvec    free
+Protein 10.00000  >= 10.0 0.00000
+Fat      1.50000  >=  1.5 0.00000
+Fibre    9.54545  <= 12.0 2.45455
+
+> all.equal( result2c[-4], result2e[-4] )
+[1] TRUE
+> 
 > 
 > 

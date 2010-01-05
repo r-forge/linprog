@@ -28,6 +28,19 @@ summary( result1c )
 # print all elements of the returned object
 print.default( result1c )
 
+# using argument const.dir
+const.dir <- c( ">=", ">=", ">=" )
+result1d <- solveLP( cvec, -bvec, -Amat, maximum = TRUE, verbose = 1,
+   const.dir = const.dir )
+print( result1d )
+all.equal( result1a[-8], result1d[-8] )
+
+# using argument const.dir and lpSolve
+result1e <-solveLP( cvec, -bvec, -Amat, maximum = TRUE, verbose = 1,
+   const.dir = const.dir, lpSolve = TRUE )
+print( result1e )
+all.equal( result1c[-4], result1e[-4] )
+
 
 ## Example 2
 ## example 1.1.3 of Witte, Deppe and Born (1975)
@@ -56,4 +69,18 @@ print( result2c )
 summary( result2c )
 # print all elements of the returned object
 print.default( result2c )
+
+# using argument const.dir
+const.dir <- c( ">=", ">=", "<=" )
+result2d <- solveLP( cvec, abs( bvec ), abs( Amat ), verbose = 1,
+   const.dir = const.dir )
+print( result2d )
+all.equal( result2a[-8], result2d[-8] )
+
+# using argument const.dir and lpSolve
+result2e <- solveLP( cvec, abs( bvec ), abs( Amat ), verbose = 1,
+   const.dir = const.dir, lpSolve = TRUE )
+print( result2e )
+all.equal( result2c[-4], result2e[-4] )
+
 
