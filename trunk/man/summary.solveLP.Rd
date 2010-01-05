@@ -1,7 +1,7 @@
 \name{summary.solveLP}
 \alias{summary.solveLP}
 \alias{print.summary.solveLP}
-\title{summary.solveLP}
+\title{Summary Results for Objects of Class solveLP}
 
 \description{
   This function returns the results of the Linear Programming function.

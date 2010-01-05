@@ -1,7 +1,7 @@
 \name{readMps}
 \alias{readMps}
 
-\title{read MPS files}
+\title{Read MPS Files}
 
 \description{
   This function reads MPS files - the standard format for Linear Programming problems.

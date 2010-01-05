@@ -1,7 +1,7 @@
 \name{writeMps}
 \alias{writeMps}
 
-\title{write MPS files}
+\title{Write MPS Files}
 
 \description{
   This function writes MPS files - the standard format for Linear Programming problems.

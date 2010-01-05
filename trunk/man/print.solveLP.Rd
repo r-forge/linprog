@@ -1,6 +1,6 @@
 \name{print.solveLP}
 \alias{print.solveLP}
-\title{print.solveLP}
+\title{Print Objects of Class solveLP}
 
 \description{
   This function returns the results of the Linear Programming function.

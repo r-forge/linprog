@@ -1,7 +1,7 @@
 \name{solveLP}
 \alias{solveLP}
 
-\title{ solve Linear Programming / Optimization problems }
+\title{Solve Linear Programming / Optimization Problems}
 
 \description{
   Minimizes (or maximizes) \eqn{c'x}, subject to \eqn{A x <= b} and \eqn{x >= 0}.
