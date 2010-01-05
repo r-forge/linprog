@@ -1,6 +1,5 @@
 solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
-               const.dir=ifelse( rep( maximum, length(bvec) ), rep("<=",length(bvec)),
-                 rep(">=",length(bvec))),
+               const.dir = rep( "<=", length( bvec ) ),
                maxiter=1000, maxiterLpSolve=20, zero=1e-9,
                tol=1e-6, dualtol = tol, lpSolve=FALSE, solve.dual=FALSE, verbose=0 )
 {
@@ -53,7 +52,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          if( min( lpres$solution ) < -tol ) {
             lpres$status <- 7
          } else if( max( round( bvec - c( Amat %*% lpres$solution ),
-            digits=rdigits ) * ( -1 )^maximum   ) > tol ) {
+            digits=rdigits ) * ( -1 ) ) > tol ) {
             lpres$status <- 3
          }
       }
@@ -82,7 +81,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
                if( min( lpres$solution ) < -tol ) {
                   lpres$status <- 7
                } else if( max( round( bvec - c( Amat %*% lpres$solution ),
-                  digits=rdigits ) * ( -1 )^maximum ) > tol ) {
+                  digits=rdigits ) * ( -1 ) ) > tol ) {
                   lpres$status <- 3
                }
             }
@@ -460,7 +459,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
                "with equality constraints" ) )
          }
          con$dual.p <- con$dual
-         dualres <- solveLP( bvec, cvec, t(Amat), rep(">=",length(cvec)), cvec )
+         dualres <- solveLP( bvec, cvec, t(Amat), const.dir = rep(">=",length(cvec)) )
          con$dual <- dualres$solution
       }
 
