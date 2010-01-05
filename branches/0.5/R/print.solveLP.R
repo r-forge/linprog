@@ -52,9 +52,9 @@ print.solveLP <- function( x, digits=6,... ) {
       cat( "unknown status ", object$status, "\n" )
    }
    if( object$status == 4 ) {
-      cat( "Simplex algorithm Phase 1 did not succed" )
+      cat( "Simplex algorithm phase 1 did not succeed" )
    } else if( object$status == 5 ) {
-      cat( "Simplex algorithm Phase 2 did not succed" )
+      cat( "Simplex algorithm phase 2 did not succeed" )
    }
 
    cat("\n")
