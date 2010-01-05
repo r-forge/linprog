@@ -179,7 +179,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          }
       }
    } else {
-      ## Simples algorithm
+      ## Simplex algorithm
       iter1 <- 0
       iter2 <- 0
 
