@@ -8,8 +8,10 @@
 }
 
 \usage{
-   solveLP( cvec, bvec, Amat, maximum=FALSE, maxiter=1000,
-            zero=1e-9, tol=1e-6, lpSolve=FALSE, verbose=FALSE )
+   solveLP( cvec, bvec, Amat, maximum=FALSE,
+            const.dir = rep( "<=", length( bvec ) ),
+            maxiter=1000, zero=1e-9, tol=1e-6, dualtol = tol,
+            lpSolve=FALSE, solve.dual=FALSE, verbose = 0 )
 }
 
 \arguments{
@@ -17,15 +19,23 @@
    \item{bvec}{vector \eqn{b} (containing \eqn{m} elements).}
    \item{Amat}{matrix A (of dimension \eqn{m \times n}).}
    \item{maximum}{logical. Should we maximize or minimize (the default)?}
+   \item{const.dir}{vector of character strings giving the directions
+      of the constraints: each value should be one of "<," "<=," "=," "==,"
+      ">," or ">=". (In each pair the two values are identical.)}
    \item{maxiter}{maximum number of iterations.}
    \item{zero}{numbers smaller than this value (in absolute terms) are
       set to zero.}
    \item{tol}{if the constraints are violated by more than this number,
       the program is stopped and an error message is displayed.}
+   \item{dualtol}{if the constraints in the dual problem are violated by more
+      than this number, the returned status is non-zero.}
    \item{lpSolve}{logical. Should the package 'lpSolve' be used to solve
       the LP problem?}
-   \item{verbose}{an optional logic variable to indicate whether interim
-      results should be printed.}
+   \item{solve.dual}{logical value indicating if the dual problem should
+      also be solved.}
+   \item{verbose}{an optional integer variable to indicate how many
+      intermediate results should be printed
+      (0 = no output; 4 = maximum output).}
 }
 
 \details{
