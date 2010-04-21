@@ -33,7 +33,7 @@ const.dir <- c( ">=", ">=", ">=" )
 result1d <- solveLP( cvec, -bvec, -Amat, maximum = TRUE, verbose = 1,
    const.dir = const.dir )
 print( result1d )
-all.equal( result1a[-8], result1d[-8] )
+all.equal( result1a[-9], result1d[-9] )
 
 # using argument const.dir and lpSolve
 result1e <-solveLP( cvec, -bvec, -Amat, maximum = TRUE, verbose = 1,
@@ -75,7 +75,7 @@ const.dir <- c( ">=", ">=", "<=" )
 result2d <- solveLP( cvec, abs( bvec ), abs( Amat ), verbose = 1,
    const.dir = const.dir )
 print( result2d )
-all.equal( result2a[-8], result2d[-8] )
+all.equal( result2a[-9], result2d[-9] )
 
 # using argument const.dir and lpSolve
 result2e <- solveLP( cvec, abs( bvec ), abs( Amat ), verbose = 1,

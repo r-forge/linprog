@@ -92,6 +92,15 @@ Cows   44.0
 Bulls  24.0
 S Land  0.8
 
+$allvar
+          opt cvec min.c     max.c   marg marg.reg
+Cows     44.0 1800   900 2400.0000     NA       NA
+Bulls    24.0  600   450 1200.0000     NA       NA
+Pigs      0.0  600  -Inf 1296.0000 -696.0     6.25
+S Land    0.8    0    NA  731.0924    0.0       NA
+S Stable  0.0    0  -Inf  240.0000 -240.0    15.00
+S Labor   0.0    0  -Inf   28.8000  -28.8  1375.00
+
 $solution
  Cows Bulls  Pigs 
    44    24     0 
@@ -114,15 +123,6 @@ $con
 Land     39.2  <=   40  0.8   0.0      0.8
 Stable   90.0  <=   90  0.0 240.0     15.0
 Labor  2500.0  <= 2500  0.0  28.8   1375.0
-
-$allvar
-          opt cvec min.c     max.c   marg marg.reg
-Cows     44.0 1800   900 2400.0000     NA       NA
-Bulls    24.0  600   450 1200.0000     NA       NA
-Pigs      0.0  600  -Inf 1296.0000 -696.0     6.25
-S Land    0.8    0    NA  731.0924    0.0       NA
-S Stable  0.0    0  -Inf  240.0000 -240.0    15.00
-S Labor   0.0    0  -Inf   28.8000  -28.8  1375.00
 
 $maximum
 [1] TRUE
@@ -271,7 +271,7 @@ S Land    0.8    0    NA  731.092    0.0       NA
 S Stable  0.0    0  -Inf  240.000 -240.0    15.00
 S Labor   0.0    0  -Inf   28.800  -28.8  1375.00
 
-> all.equal( result1a[-8], result1d[-8] )
+> all.equal( result1a[-9], result1d[-9] )
 [1] TRUE
 > 
 > # using argument const.dir and lpSolve
@@ -372,6 +372,14 @@ Feed1   1.818182
 Feed2   2.954545
 S Fibre 2.454545
 
+$allvar
+               opt cvec      min.c     max.c      marg marg.reg
+Feed1     1.818182  2.5 -3.6666667 5.0000000        NA       NA
+Feed2     2.954545  2.0 -3.0000000 3.7500000        NA       NA
+S Protein 0.000000  0.0 -0.5681818       Inf 0.5681818     3.60
+S Fat     0.000000  0.0 -3.1818182       Inf 3.1818182     1.35
+S Fibre   2.454545  0.0         NA 0.8333333 0.0000000       NA
+
 $solution
    Feed1    Feed2 
 1.818182 2.954545 
@@ -394,14 +402,6 @@ $con
 Protein -10.000000  <= -10.0 0.000000 0.5681818 3.600000
 Fat      -1.500000  <=  -1.5 0.000000 3.1818182 1.350000
 Fibre     9.545455  <=  12.0 2.454545 0.0000000 2.454545
-
-$allvar
-               opt cvec      min.c     max.c      marg marg.reg
-Feed1     1.818182  2.5 -3.6666667 5.0000000        NA       NA
-Feed2     2.954545  2.0 -3.0000000 3.7500000        NA       NA
-S Protein 0.000000  0.0 -0.5681818       Inf 0.5681818     3.60
-S Fat     0.000000  0.0 -3.1818182       Inf 3.1818182     1.35
-S Fibre   2.454545  0.0         NA 0.8333333 0.0000000       NA
 
 $maximum
 [1] FALSE
@@ -567,7 +567,7 @@ S Protein 0.00000  0.0 -0.568182      Inf 0.568182     3.60
 S Fat     0.00000  0.0 -3.181818      Inf 3.181818     1.35
 S Fibre   2.45455  0.0        NA 0.833333 0.000000       NA
 
-> all.equal( result2a[-8], result2d[-8] )
+> all.equal( result2a[-9], result2d[-9] )
 [1] TRUE
 > 
 > # using argument const.dir and lpSolve
