@@ -20,9 +20,9 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       stop( paste( "'const.dir' must have as the elements as constraints",
          "(=elements of vector b).\n" ) )
    }
-   if( sum( const.dir == ">=" | const.dir == ">" | const.dir == "=" | const.dir == "<=" |
-            const.dir == "<" ) < nCon ) {
-       stop( "'const.dir' may only contain '>=', '>', '=', '<=' or '<'.\n" )
+   if( sum( const.dir == ">=" | const.dir == ">" | const.dir == "=" |
+         const.dir == "==" | const.dir == "<=" | const.dir == "<" ) < nCon ) {
+       stop( "'const.dir' may only contain '>=', '>', '=', '==', '<=' or '<'" )
    }
    ## Labels
    if( is.null(names(cvec))) {
