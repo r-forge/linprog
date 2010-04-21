@@ -345,7 +345,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       result$iter2    <- iter2
       result$allvar   <- round( allvar, digits=rdigits )
       result$basvar   <- round( basvar, digits=rdigits )
-      result$solution <- result$allvar[ 1 : nVar, 1 ]
+      result$solution <- result$allvar$opt[ 1 : nVar ]
       names( result$solution ) <- clab[ 1: nVar ]
 
       result$con      <- con
