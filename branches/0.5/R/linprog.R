@@ -340,7 +340,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       con$free[ const.dir2 == 1 ] <- -con$free[ const.dir2 == 1 ]
       con$free[ const.dir2 == 0 ] <- -abs( con$free[ const.dir2 == 0 ] )
 
-      result$opt   <- -Tab[ nCon+1, nCon+nVar+1 ] * (-1)^maximum
+      result$opt      <- round( -Tab[ nCon+1, nCon+nVar+1 ], digits=rdigits ) * (-1)^maximum
       result$iter1    <- iter1
       result$iter2    <- iter2
       result$allvar   <- round( allvar, digits=rdigits )
