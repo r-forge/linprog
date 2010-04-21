@@ -58,12 +58,12 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          result$opt    <- lpres$objval
 
          ## Results: Constraints
-         con <- data.frame( actual=NA, dir=const.dir, bvec=bvec, free=NA )
-         con$actual <- round( c( Amat %*% result$solution ), digits=rdigits )
-         names( con$actual ) <- blab
-         con$free   <- round( con$bvec - con$actual, digits=rdigits )
-         con$free[ const.dir2 == 1 ] <- -con$free[ const.dir2 == 1 ]
-         con$free[ const.dir2 == 0 ] <- -abs( con$free[ const.dir2 == 0 ] )
+         result$con <- data.frame( actual=NA, dir=const.dir, bvec=bvec, free=NA )
+         result$con$actual <- round( c( Amat %*% result$solution ), digits=rdigits )
+         names( result$con$actual ) <- blab
+         result$con$free   <- round( result$con$bvec - result$con$actual, digits=rdigits )
+         result$con$free[ const.dir2 == 1 ] <- -result$con$free[ const.dir2 == 1 ]
+         result$con$free[ const.dir2 == 0 ] <- -abs( result$con$free[ const.dir2 == 0 ] )
       }
 
    } else {
@@ -348,13 +348,13 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
 
       result$iter1    <- iter1
       result$iter2    <- iter2
+      result$con      <- con
       if( verbose >= 1 ) result$Tab <- Tab
       if( iter1 >= maxiter ) result$status <- 4
       if( iter2 >= maxiter ) result$status <- 5
    }
 
    ## List of Results
-   result$con      <- con
    result$maximum  <- maximum
    result$lpSolve  <- lpSolve
    result$maxiter    <- maxiter
