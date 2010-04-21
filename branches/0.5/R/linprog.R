@@ -341,8 +341,8 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       con$free[ const.dir2 == 0 ] <- -abs( con$free[ const.dir2 == 0 ] )
 
       result$opt   <- -Tab[ nCon+1, nCon+nVar+1 ] * (-1)^maximum
-      result$basvar   <- round( basvar, digits=10 )
-      result$allvar   <- round( allvar, digits=10 )
+      result$basvar   <- round( basvar, digits=rdigits )
+      result$allvar   <- round( allvar, digits=rdigits )
       result$solution <- result$allvar[ 1 : nVar, 1 ]
       names( result$solution ) <- clab[ 1: nVar ]
 
