@@ -86,11 +86,11 @@ $status
 $opt
 [1] 93600
 
-$basvar
-        opt
-Cows   44.0
-Bulls  24.0
-S Land  0.8
+$iter1
+[1] 0
+
+$iter2
+[1] 2
 
 $allvar
           opt cvec min.c     max.c   marg marg.reg
@@ -101,15 +101,15 @@ S Land    0.8    0    NA  731.0924    0.0       NA
 S Stable  0.0    0  -Inf  240.0000 -240.0    15.00
 S Labor   0.0    0  -Inf   28.8000  -28.8  1375.00
 
+$basvar
+        opt
+Cows   44.0
+Bulls  24.0
+S Land  0.8
+
 $solution
  Cows Bulls  Pigs 
    44    24     0 
-
-$iter1
-[1] 0
-
-$iter2
-[1] 2
 
 $con
        actual dir bvec free  dual dual.reg
@@ -366,11 +366,11 @@ $status
 $opt
 [1] 10.45455
 
-$basvar
-             opt
-Feed1   1.818182
-Feed2   2.954545
-S Fibre 2.454545
+$iter1
+[1] 2
+
+$iter2
+[1] 0
 
 $allvar
                opt cvec      min.c     max.c      marg marg.reg
@@ -380,15 +380,15 @@ S Protein 0.000000  0.0 -0.5681818       Inf 0.5681818     3.60
 S Fat     0.000000  0.0 -3.1818182       Inf 3.1818182     1.35
 S Fibre   2.454545  0.0         NA 0.8333333 0.0000000       NA
 
+$basvar
+             opt
+Feed1   1.818182
+Feed2   2.954545
+S Fibre 2.454545
+
 $solution
    Feed1    Feed2 
 1.818182 2.954545 
-
-$iter1
-[1] 2
-
-$iter2
-[1] 0
 
 $con
             actual dir  bvec     free      dual dual.reg

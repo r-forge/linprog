@@ -341,13 +341,13 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       con$free[ const.dir2 == 0 ] <- -abs( con$free[ const.dir2 == 0 ] )
 
       result$opt   <- -Tab[ nCon+1, nCon+nVar+1 ] * (-1)^maximum
-      result$basvar   <- round( basvar, digits=rdigits )
+      result$iter1    <- iter1
+      result$iter2    <- iter2
       result$allvar   <- round( allvar, digits=rdigits )
+      result$basvar   <- round( basvar, digits=rdigits )
       result$solution <- result$allvar[ 1 : nVar, 1 ]
       names( result$solution ) <- clab[ 1: nVar ]
 
-      result$iter1    <- iter1
-      result$iter2    <- iter2
       result$con      <- con
       if( verbose >= 1 ) result$Tab <- Tab
       if( iter1 >= maxiter ) result$status <- 4
