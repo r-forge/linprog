@@ -13,7 +13,7 @@ in \eqn{A x <= b} can be changed with argument \code{const.dir}.
 \usage{
 solveLP( cvec, bvec, Amat, maximum=FALSE,
    const.dir = rep( "<=", length( bvec ) ),
-   maxiter=1000, zero=1e-10, lpSolve=FALSE, verbose = 0 )
+   maxiter=1000, zero=1e-9, lpSolve=FALSE, verbose = 0 )
 }
 
 \arguments{

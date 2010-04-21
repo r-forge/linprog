@@ -1,6 +1,6 @@
 solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
                const.dir = rep( "<=", length( bvec ) ),
-               maxiter=1000, zero=1e-10, lpSolve=FALSE, verbose = 0 )
+               maxiter=1000, zero=1e-9, lpSolve=FALSE, verbose = 0 )
 {
 
    result <- list()  # list for results that will be returned
