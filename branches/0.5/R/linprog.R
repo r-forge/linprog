@@ -55,7 +55,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       } else  {
          result$solution  <- lpres$solution
          names( result$solution ) <- clab
-         objval    <- lpres$objval
+         result$opt    <- lpres$objval
          allvar    <- NULL
          basvar    <- NULL
 
@@ -342,7 +342,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       con$free[ const.dir2 == 1 ] <- -con$free[ const.dir2 == 1 ]
       con$free[ const.dir2 == 0 ] <- -abs( con$free[ const.dir2 == 0 ] )
 
-      objval   <- -Tab[ nCon+1, nCon+nVar+1 ] * (-1)^maximum
+      result$opt   <- -Tab[ nCon+1, nCon+nVar+1 ] * (-1)^maximum
       basvar   <- round( basvar, digits=10 )
       allvar   <- round( allvar, digits=10 )
       result$solution <- allvar[ 1 : nVar, 1 ]
@@ -356,7 +356,6 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
    }
 
    ## List of Results
-   result$opt      <- round( objval, digits=10 )
    result$basvar   <- basvar
    result$con      <- con
    result$allvar   <- allvar
