@@ -51,8 +51,8 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       if( lpres$status == 0 ) {
          if( min( lpres$solution ) < -tol ) {
             lpres$status <- 7
-         } else if( max( round( bvec - c( Amat %*% lpres$solution ),
-            digits=rdigits ) * ( -1 ) ) > tol ) {
+         } else if( max( ( bvec - c( Amat %*% lpres$solution ) ) *
+               const.dir2 ) > tol ) {
             lpres$status <- 3
          }
       }
