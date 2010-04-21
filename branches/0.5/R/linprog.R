@@ -1,6 +1,6 @@
 solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
                const.dir = rep( "<=", length( bvec ) ),
-               maxiter=1000, zero=1e-9, lpSolve=FALSE, verbose = 0 )
+               maxiter=1000, zero=1e-9, tol=1e-6, lpSolve=FALSE, verbose = 0 )
 {
 
    result <- list()  # list for results that will be returned
@@ -48,6 +48,14 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          direction <- "min"
       }
       lpres <- lp( direction = direction, cvec, Amat, const.dir, bvec )
+      if( lpres$status == 0 ) {
+         if( min( lpres$solution ) < -tol ) {
+            lpres$status <- 7
+         } else if( max( ( bvec - c( Amat %*% lpres$solution ) ) *
+               const.dir2 ) > tol ) {
+            lpres$status <- 3
+         }
+      }
 
       if( lpres$status != 0 ) {
          result$status <- 1
@@ -352,6 +360,12 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       if( verbose >= 1 ) result$Tab <- Tab
       if( iter1 >= maxiter ) result$status <- 4
       if( iter2 >= maxiter ) result$status <- 5
+   }
+
+   if( result$status == 0 ) {
+      if( min ( result$con$free ) < - tol ) {
+         result$status <- 3
+      }
    }
 
    ## List of Results

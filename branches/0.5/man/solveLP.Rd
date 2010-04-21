@@ -13,7 +13,7 @@ in \eqn{A x <= b} can be changed with argument \code{const.dir}.
 \usage{
 solveLP( cvec, bvec, Amat, maximum=FALSE,
    const.dir = rep( "<=", length( bvec ) ),
-   maxiter=1000, zero=1e-9, lpSolve=FALSE, verbose = 0 )
+   maxiter=1000, zero=1e-9, tol = 1e-6, lpSolve=FALSE, verbose = 0 )
 }
 
 \arguments{
@@ -27,6 +27,8 @@ solveLP( cvec, bvec, Amat, maximum=FALSE,
    \item{maxiter}{maximum number of iterations.}
    \item{zero}{numbers smaller than this value (in absolute terms) are
       set to zero.}
+   \item{tol}{if the constraints are violated by more than this number,
+      the returned component \code{status} is set to \code{3}.}
    \item{lpSolve}{logical. Should the package 'lpSolve' be used to solve
       the LP problem?}
    \item{verbose}{an optional integer variable to indicate how many
@@ -84,6 +86,8 @@ solveLP( cvec, bvec, Amat, maximum=FALSE,
             6th column = valid region for these derivatives.}
    \item{status}{numeric. Indicates if the optimization did succeed:\cr
       0 = success; 1 = lpSolve did not succeed;
+      3 = constraints are violated at the solution
+         (internal error or large rounding errors);
       4 = simplex algorithm phase 1 did not succeed;
       5 = simplex algorithm phase 2 did not succeed.}
    \item{lpStatus}{numeric. Return code of \code{\link[lpSolve]{lp}}
