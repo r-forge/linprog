@@ -53,15 +53,15 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          result$status <- 1
          result$lpStatus <- lpres$status
       } else  {
-         solution  <- lpres$solution
-         names( solution ) <- clab
+         result$solution  <- lpres$solution
+         names( result$solution ) <- clab
          objval    <- lpres$objval
          allvar    <- NULL
          basvar    <- NULL
 
          ## Results: Constraints
          con <- data.frame( actual=NA, dir=const.dir, bvec=bvec, free=NA )
-         con$actual <- round( c( Amat %*% solution ), digits=rdigits )
+         con$actual <- round( c( Amat %*% result$solution ), digits=rdigits )
          names( con$actual ) <- blab
          con$free   <- round( con$bvec - con$actual, digits=rdigits )
          con$free[ const.dir2 == 1 ] <- -con$free[ const.dir2 == 1 ]
@@ -345,7 +345,8 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       objval   <- -Tab[ nCon+1, nCon+nVar+1 ] * (-1)^maximum
       basvar   <- round( basvar, digits=10 )
       allvar   <- round( allvar, digits=10 )
-      solution <- allvar[ 1 : nVar, 1 ]
+      result$solution <- allvar[ 1 : nVar, 1 ]
+      names( result$solution ) <- clab[ 1: nVar ]
 
       result$iter1    <- iter1
       result$iter2    <- iter2
@@ -356,8 +357,6 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
 
    ## List of Results
    result$opt      <- round( objval, digits=10 )
-   result$solution <- solution
-   names( result$solution ) <- clab[ 1: nVar ]
    result$basvar   <- basvar
    result$con      <- con
    result$allvar   <- allvar

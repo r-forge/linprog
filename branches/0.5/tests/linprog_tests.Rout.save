@@ -83,6 +83,10 @@ Pigs    0
 $status
 [1] 0
 
+$solution
+ Cows Bulls  Pigs 
+   44    24     0 
+
 $iter1
 [1] 0
 
@@ -98,10 +102,6 @@ Z-C      0     0 696.000      0   240.00 28.8000 93600.0
 
 $opt
 [1] 93600
-
-$solution
- Cows Bulls  Pigs 
-   44    24     0 
 
 $basvar
         opt
@@ -206,12 +206,12 @@ Pigs    0
 $status
 [1] 0
 
-$opt
-[1] 93600
-
 $solution
  Cows Bulls  Pigs 
    44    24     0 
+
+$opt
+[1] 93600
 
 $con
        actual dir bvec free
@@ -363,6 +363,10 @@ Feed2 2.954545
 $status
 [1] 0
 
+$solution
+   Feed1    Feed2 
+1.818182 2.954545 
+
 $iter1
 [1] 2
 
@@ -378,10 +382,6 @@ Z-C       0     0  0.5681818  3.181818       0 -10.454545
 
 $opt
 [1] 10.45455
-
-$solution
-   Feed1    Feed2 
-1.818182 2.954545 
 
 $basvar
              opt
@@ -504,12 +504,12 @@ Feed2 2.954545
 $status
 [1] 0
 
-$opt
-[1] 10.45455
-
 $solution
    Feed1    Feed2 
 1.818182 2.954545 
+
+$opt
+[1] 10.45455
 
 $con
             actual dir  bvec     free
