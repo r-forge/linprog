@@ -48,10 +48,11 @@ print.solveLP <- function( x, digits=6,... ) {
       }
    } else if( object$status == 1 ) {
       cat( "lpSolve returned error code: ", object$lpStatus, "\n" )
-   } else {
-      cat( "unknown status ", object$status, "\n" )
    }
-   if( object$status == 4 ) {
+   if( object$status == 3 ) {
+      print( object$con[ 1: 4 ] )
+      cat( "The Constraints are violated. This is most likely due to rounding errors" )
+   } else if( object$status == 4 ) {
       cat( "Simplex algorithm phase 1 did not succeed" )
    } else if( object$status == 5 ) {
       cat( "Simplex algorithm phase 2 did not succeed" )
