@@ -4,7 +4,10 @@
 \title{Solve Linear Programming / Optimization Problems}
 
 \description{
-  Minimizes \eqn{c'x}, subject to \eqn{A x <= b} and \eqn{x >= 0}.
+  Minimizes (or maximizes) \eqn{c'x}, subject to \eqn{A x <= b} and \eqn{x >= 0}.
+
+Note that the inequality signs \code{<=} of the individual linear constraints
+in \eqn{A x <= b} can be changed with argument \code{const.dir}.
 }
 
 \usage{
