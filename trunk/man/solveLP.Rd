@@ -73,10 +73,8 @@ in \eqn{A x <= b} can be changed with argument \code{const.dir}.
 
   \item{opt}{optimal value (minimum or maximum) of the objective function.}
   \item{solution}{vector of optimal values of the variables.}
-  \item{iter1}{iterations of Simplex algorithm in phase 1
-            (is negative if it equals 'maxiter').}
-  \item{iter2}{iterations of Simplex algorithm in phase 2
-            (is negative if it equals 'maxiter').}
+  \item{iter1}{iterations of Simplex algorithm in phase 1.}
+  \item{iter2}{iterations of Simplex algorithm in phase 2.}
   \item{basvar}{vector of basic (=non-zero) variables (at optimum).}
   \item{con}{matrix of results regarding the constraints:\cr
             1st column = maximum values (=vector \eqn{b});\cr
