@@ -26,7 +26,7 @@
    \item{zero}{numbers smaller than this value (in absolute terms) are
       set to zero.}
    \item{tol}{if the constraints are violated by more than this number,
-      the program is stopped and an error message is displayed.}
+      the returned component \code{status} is set to \code{3}.}
    \item{dualtol}{if the constraints in the dual problem are violated by more
       than this number, the returned status is non-zero.}
    \item{lpSolve}{logical. Should the package 'lpSolve' be used to solve
