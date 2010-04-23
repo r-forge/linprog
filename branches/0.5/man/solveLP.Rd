@@ -93,7 +93,7 @@ solveLP( cvec, bvec, Amat, maximum=FALSE,
       5 = simplex algorithm phase 2 did not find the optimal solution within
          the number of iterations specified by argument \code{maxiter}.}
    \item{lpStatus}{numeric. Return code of \code{\link[lpSolve]{lp}}
-      (only if it is non-zero).}
+      (only if argument \code{lpSolve} is \code{TRUE}).}
    \item{maximum}{logical. Indicates whether the objective function
             was maximized or minimized.}
    \item{Tab}{final 'Tableau' of the Simplex algorith.}

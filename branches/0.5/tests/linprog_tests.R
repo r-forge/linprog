@@ -39,7 +39,7 @@ all.equal( result1a[-8], result1d[-8] )
 result1e <-solveLP( cvec, -bvec, -Amat, maximum = TRUE, verbose = 1,
    const.dir = const.dir, lpSolve = TRUE )
 print( result1e )
-all.equal( result1c[-4], result1e[-4] )
+all.equal( result1c[-5], result1e[-5] )
 
 
 ## Example 2
@@ -81,6 +81,6 @@ all.equal( result2a[-8], result2d[-8] )
 result2e <- solveLP( cvec, abs( bvec ), abs( Amat ), verbose = 1,
    const.dir = const.dir, lpSolve = TRUE )
 print( result2e )
-all.equal( result2c[-4], result2e[-4] )
+all.equal( result2c[-5], result2e[-5] )
 
 

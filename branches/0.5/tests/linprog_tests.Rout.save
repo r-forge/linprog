@@ -206,6 +206,9 @@ Pigs    0
 $status
 [1] 0
 
+$lpStatus
+[1] 0
+
 $solution
  Cows Bulls  Pigs 
    44    24     0 
@@ -297,7 +300,7 @@ Land     -39.2  >=   -40  0.8
 Stable   -90.0  >=   -90  0.0
 Labor  -2500.0  >= -2500  0.0
 
-> all.equal( result1c[-4], result1e[-4] )
+> all.equal( result1c[-5], result1e[-5] )
 [1] TRUE
 > 
 > 
@@ -504,6 +507,9 @@ Feed2 2.954545
 $status
 [1] 0
 
+$lpStatus
+[1] 0
+
 $solution
    Feed1    Feed2 
 1.818182 2.954545 
@@ -592,7 +598,7 @@ Protein 10.00000  >= 10.0 0.00000
 Fat      1.50000  >=  1.5 0.00000
 Fibre    9.54545  <= 12.0 2.45455
 
-> all.equal( result2c[-4], result2e[-4] )
+> all.equal( result2c[-5], result2e[-5] )
 [1] TRUE
 > 
 > 
