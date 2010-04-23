@@ -386,7 +386,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       dualres <- solveLP( cvec = bvec * const.dir2 * (-1)^maximum, bvec = cvec,
          Amat = t( Amat * const.dir2 ) * (-1)^maximum, maximum = !maximum,
          const.dir = const.dir.dual, maxiter = maxiter, zero = zero,
-         tol = dualtol, lpSolve = lpSolve )
+         tol = dualtol, lpSolve = lpSolve, verbose = verbose )
       result$dualStatus <- dualres$status
       if( result$dualStatus == 0 ) {
          result$con$dual <- dualres$solution

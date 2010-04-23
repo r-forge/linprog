@@ -202,6 +202,91 @@ Land     0     0  -0.952      1    -0.28 -0.0056     0.8
 Bulls    0     1   3.840      0     1.60 -0.0480    24.0
 Cows     1     0  -0.560      0    -0.40  0.0320    44.0
 Z-C      0     0 696.000      0   240.00 28.8000 93600.0
+[1] "initial Tableau"
+       Land Stable  Labor S Cows S Bulls S Pigs    P0
+Cows  -0.70   -1.5  -50.0      1       0      0 -1800
+Bulls -0.35   -1.0  -12.5      0       1      0  -600
+Pigs   0.00   -3.0  -20.0      0       0      1  -600
+Z-C   40.00   90.0 2500.0      0       0      0     0
+[1] "initial Tableau for Phase 1"
+         Land Stable  Labor S Cows S Bulls S Pigs M Cows M Bulls M Pigs    P0
+M Cows   0.70    1.5   50.0     -1       0      0      1       0      0  1800
+M Bulls  0.35    1.0   12.5      0      -1      0      0       1      0   600
+M Pigs   0.00    3.0   20.0      0       0     -1      0       0      1   600
+Z-C     40.00   90.0 2500.0      0       0      0      0       0      0     0
+M Z-C   -1.05   -5.5  -82.5      1       1      1      0       0      0 -3000
+
+Pivot Column: 3 ( Labor )
+Pivot Row: 3 ( M Pigs )
+
+         Land   Stable Labor S Cows S Bulls  S Pigs M Cows M Bulls   M Pigs
+M Cows   0.70   -6.000     0     -1       0   2.500      1       0   -2.500
+M Bulls  0.35   -0.875     0      0      -1   0.625      0       1   -0.625
+Labor    0.00    0.150     1      0       0  -0.050      0       0    0.050
+Z-C     40.00 -285.000     0      0       0 125.000      0       0 -125.000
+M Z-C   -1.05    6.875     0      1       1  -3.125      0       0    4.125
+            P0
+M Cows     300
+M Bulls    225
+Labor       30
+Z-C     -75000
+M Z-C     -525
+
+Pivot Column: 1 ( Land )
+Pivot Row: 1 ( M Cows )
+
+        Land    Stable Labor    S Cows S Bulls     S Pigs     M Cows M Bulls
+Land       1 -8.571429     0 -1.428571       0   3.571429   1.428571       0
+M Bulls    0  2.125000     0  0.500000      -1  -0.625000  -0.500000       1
+Labor      0  0.150000     1  0.000000       0  -0.050000   0.000000       0
+Z-C        0 57.857143     0 57.142857       0 -17.857143 -57.142857       0
+M Z-C      0 -2.125000     0 -0.500000       1   0.625000   1.500000       0
+           M Pigs          P0
+Land    -3.571429    428.5714
+M Bulls  0.625000     75.0000
+Labor    0.050000     30.0000
+Z-C     17.857143 -92142.8571
+M Z-C    0.375000    -75.0000
+
+Pivot Column: 4 ( S Cows )
+Pivot Row: 2 ( M Bulls )
+
+       Land        Stable Labor S Cows       S Bulls        S Pigs M Cows
+Land      1 -2.500000e+00     0      0 -2.857143e+00  1.785714e+00      0
+S Cows    0  4.250000e+00     0      1 -2.000000e+00 -1.250000e+00     -1
+Labor     0  1.500000e-01     1      0  0.000000e+00 -5.000000e-02      0
+Z-C       0 -1.850000e+02     0      0  1.142857e+02  5.357143e+01      0
+M Z-C     0  4.440892e-16     0      0  4.440892e-16 -2.220446e-16      1
+           M Bulls     M Pigs            P0
+Land      2.857143  -1.785714  6.428571e+02
+S Cows    2.000000   1.250000  1.500000e+02
+Labor     0.000000   0.050000  3.000000e+01
+Z-C    -114.285714 -53.571429 -1.007143e+05
+M Z-C     1.000000   1.000000 -8.526513e-14
+[1] "New starting Tableau for Phase II"
+       Land  Stable Labor S Cows    S Bulls    S Pigs             
+Land      1   -2.50     0      0  -2.857143  1.785714     642.8571
+S Cows    0    4.25     0      1  -2.000000 -1.250000     150.0000
+Labor     0    0.15     1      0   0.000000 -0.050000      30.0000
+Z-C       0 -185.00     0      0 114.285714 53.571429 -100714.2857
+
+Pivot Column: 2 ( Stable )
+Pivot Row: 2 ( S Cows )
+
+       Land Stable Labor      S Cows     S Bulls       S Pigs             
+Land      1      0     0  0.58823529 -4.03361345  1.050420168    731.09244
+Stable    0      1     0  0.23529412 -0.47058824 -0.294117647     35.29412
+Labor     0      0     1 -0.03529412  0.07058824 -0.005882353     24.70588
+Z-C       0      0     0 43.52941176 27.22689076 -0.840336134 -94184.87395
+
+Pivot Column: 6 ( S Pigs )
+Pivot Row: 1 ( Land )
+
+         Land Stable Labor S Cows S Bulls S Pigs         
+S Pigs 0.9520      0     0  0.560  -3.840      1    696.0
+Stable 0.2800      1     0  0.400  -1.600      0    240.0
+Labor  0.0056      0     1 -0.032   0.048      0     28.8
+Z-C    0.8000      0     0 44.000  24.000      0 -93600.0
 > all.equal( result1aD, result1bD )
 [1] TRUE
 > 
@@ -598,6 +683,27 @@ Feed2     0     1 -0.5681818  1.818182       0   2.954545
 Feed1     1     0  0.2272727 -2.727273       0   1.818182
 Fibre     0     0  0.6818182  1.818182       1   2.454545
 Z-C       0     0  0.5681818  3.181818       0 -10.454545
+[1] "initial Tableau"
+      Protein  Fat Fibre S Feed1 S Feed2  P0
+Feed1     1.6  0.5    -2       1       0 2.5
+Feed2     2.4  0.2    -2       0       1 2.0
+Z-C     -10.0 -1.5    12       0       0 0.0
+
+Pivot Column: 1 ( Protein )
+Pivot Row: 2 ( Feed2 )
+
+        Protein         Fat      Fibre S Feed1    S Feed2        P0
+Feed1         0  0.36666667 -0.6666667       1 -0.6666667 1.1666667
+Protein       1  0.08333333 -0.8333333       0  0.4166667 0.8333333
+Z-C           0 -0.66666667  3.6666667       0  4.1666667 8.3333333
+
+Pivot Column: 2 ( Fat )
+Pivot Row: 1 ( Feed1 )
+
+        Protein Fat      Fibre    S Feed1    S Feed2         P0
+Fat           0   1 -1.8181818  2.7272727 -1.8181818  3.1818182
+Protein       1   0 -0.6818182 -0.2272727  0.5681818  0.5681818
+Z-C           0   0  2.4545455  1.8181818  2.9545455 10.4545455
 > all.equal( result2aD, result2bD )
 [1] TRUE
 > 
