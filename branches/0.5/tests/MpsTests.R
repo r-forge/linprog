@@ -23,6 +23,7 @@ writeMps( mpsFile, cvec, bvec, Amat, "Steinhauser" )
 
 ## write the lines of this file to the output file
 mpsLines <- readLines( mpsFile )
+close( mpsFile )
 print( mpsLines )
 
 ## Write to a (virtual) MPS file again (for readMps)
@@ -34,6 +35,7 @@ rm( cvec, bvec, Amat )
 
 ## Read LP data from MPS file and solve it.
 lpModel <- readMps( mpsFile, TRUE, TRUE )
+close( mpsFile )
 
 ## Print the model and its result
 lpModel
@@ -63,6 +65,7 @@ writeMps( mpsFile, cvec, bvec, Amat, "Steinhauser" )
 
 ## write the lines of this file to the output file
 mpsLines <- readLines( mpsFile )
+close( mpsFile )
 print( mpsLines )
 
 ## Write to a (virtual) MPS file again (for readMps)
@@ -74,6 +77,7 @@ rm( cvec, bvec, Amat )
 
 ## Read LP data from MPS file and solve it.
 lpModel <- readMps( mpsFile, TRUE )
+close( mpsFile )
 
 ## Print the model and its result
 lpModel

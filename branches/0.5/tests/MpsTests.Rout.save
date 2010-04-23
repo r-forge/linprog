@@ -41,6 +41,7 @@ Loading required package: lpSolve
 > 
 > ## write the lines of this file to the output file
 > mpsLines <- readLines( mpsFile )
+> close( mpsFile )
 > print( mpsLines )
  [1] "NAME          Steinhauser"           
  [2] "ROWS"                                
@@ -75,6 +76,7 @@ Loading required package: lpSolve
 > 
 > ## Read LP data from MPS file and solve it.
 > lpModel <- readMps( mpsFile, TRUE, TRUE )
+> close( mpsFile )
 > 
 > ## Print the model and its result
 > lpModel
@@ -134,8 +136,6 @@ S Labor   0.0    0  -Inf   28.800  -28.8  1375.00
 
 > all.equal( result1a, lpModel$res )
 [1] TRUE
-Warning message:
-closing unused connection 3 () 
 > 
 > 
 > ## example 1.1.3 of Witte, Deppe and Born (1975)
@@ -161,6 +161,7 @@ closing unused connection 3 ()
 > 
 > ## write the lines of this file to the output file
 > mpsLines <- readLines( mpsFile )
+> close( mpsFile )
 > print( mpsLines )
  [1] "NAME          Steinhauser"           
  [2] "ROWS"                                
@@ -192,6 +193,7 @@ closing unused connection 3 ()
 > 
 > ## Read LP data from MPS file and solve it.
 > lpModel <- readMps( mpsFile, TRUE )
+> close( mpsFile )
 > 
 > ## Print the model and its result
 > lpModel
