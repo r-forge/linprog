@@ -159,6 +159,9 @@ Amat <- rbind( c( -1.6,  -2.4 ),
 ## Minimize the cost
 solveLP( cvec, bvec, Amat )
 
+# the same optimisation using argument const.dir
+solveLP( cvec, abs( bvec ), abs( Amat ), const.dir = c( ">=", ">=", "<=" ) )
+
 
 ## There are also several other ways to put the data into the arrays, e.g.:
 bvec <- c( Protein = -10.0,
