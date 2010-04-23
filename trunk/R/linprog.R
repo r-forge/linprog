@@ -88,17 +88,17 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          }
          dualres <- lp( direction, bvec * const.dir2 * (-1)^maximum,
             t( Amat * const.dir2 ) * (-1)^maximum, const.dir.dual, cvec )
-         if( dualres$status == 0 ) {
+         result$dualStatus <- dualres$status
+         if( result$dualStatus == 0 ) {
             if( min( dualres$solution ) < -dualtol ) {
-               dualres$status <- 7
+               result$dualStatus <- 7
             } else if( max( round( cvec - c( ( t( Amat * const.dir2 ) *
                (-1)^maximum ) %*% dualres$solution ), digits=rdigits ) *
                ( -1 )^(!maximum) ) > dualtol ) {
-               dualres$status <- 3
+               result$dualStatus <- 3
             }
          }
-         result$dualStatus <- dualres$status
-         if( dualres$status == 0 ) {
+         if( result$dualStatus == 0 ) {
             result$con$dual <- dualres$solution
          }
       }
@@ -385,6 +385,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          }
          con$dual.p <- con$dual
          dualres <- solveLP( bvec, cvec, t(Amat), const.dir = rep(">=",length(cvec)) )
+         result$dualStatus <- dualres$status
          con$dual <- dualres$solution
       }
 
