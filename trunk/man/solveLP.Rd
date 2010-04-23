@@ -89,6 +89,18 @@ in \eqn{A x <= b} can be changed with argument \code{const.dir}.
             4th column = maximum of vector \eqn{c} that does \emph{not} change the solution;\cr
             5th column = derivatives to the objective function;\cr
             6th column = valid region for these derivatives.}
+   \item{status}{numeric. Indicates if the optimization did succeed:\cr
+      0 = success; 1 = lpSolve did not succeed;
+      3 = constraints are violated at the solution
+         (internal error or large rounding errors);
+      4 = simplex algorithm phase 1 did not find a solution within
+         the number of iterations specified by argument \code{maxiter};
+      5 = simplex algorithm phase 2 did not find the optimal solution within
+         the number of iterations specified by argument \code{maxiter}.}
+   \item{lpStatus}{numeric. Return code of \code{\link[lpSolve]{lp}}
+      (only if argument \code{lpSolve} is \code{TRUE}).}
+   \item{dualStatus}{numeric. Return code of \code{\link[lpSolve]{lp}}
+      (only if argument \code{solve.dual} is \code{TRUE}).}
    \item{maximum}{logical. Indicates whether the objective function
             was maximized or minimized.}
    \item{Tab}{final 'Tableau' of the Simplex algorith.}
