@@ -11,9 +11,10 @@ in \eqn{A x <= b} can be changed with argument \code{const.dir}.
 }
 
 \usage{
-solveLP( cvec, bvec, Amat, maximum=FALSE,
+solveLP( cvec, bvec, Amat, maximum = FALSE,
    const.dir = rep( "<=", length( bvec ) ),
-   maxiter=1000, zero=1e-9, tol = 1e-6, lpSolve=FALSE, verbose = 0 )
+   maxiter = 1000, zero = 1e-9, tol = 1e-6, dualtol = tol,
+   lpSolve = FALSE, solve.dual = FALSE, verbose = 0 )
 }
 
 \arguments{
@@ -29,8 +30,12 @@ solveLP( cvec, bvec, Amat, maximum=FALSE,
       set to zero.}
    \item{tol}{if the constraints are violated by more than this number,
       the returned component \code{status} is set to \code{3}.}
+   \item{dualtol}{if the constraints in the dual problem are violated by more
+      than this number, the returned status is non-zero.}
    \item{lpSolve}{logical. Should the package 'lpSolve' be used to solve
       the LP problem?}
+   \item{solve.dual}{logical value indicating if the dual problem should
+      also be solved.}
    \item{verbose}{an optional integer variable to indicate how many
       intermediate results should be printed
       (0 = no output; 4 = maximum output).}
@@ -86,6 +91,7 @@ solveLP( cvec, bvec, Amat, maximum=FALSE,
             6th column = valid region for these derivatives.}
    \item{status}{numeric. Indicates if the optimization did succeed:\cr
       0 = success; 1 = lpSolve did not succeed;
+      2 = solving the dual problem did not succeed;
       3 = constraints are violated at the solution
          (internal error or large rounding errors);
       4 = simplex algorithm phase 1 did not find a solution within
@@ -94,11 +100,14 @@ solveLP( cvec, bvec, Amat, maximum=FALSE,
          the number of iterations specified by argument \code{maxiter}.}
    \item{lpStatus}{numeric. Return code of \code{\link[lpSolve]{lp}}
       (only if argument \code{lpSolve} is \code{TRUE}).}
+   \item{dualStatus}{numeric. Return code from solving the dual problem
+      (only if argument \code{solve.dual} is \code{TRUE}).}
    \item{maximum}{logical. Indicates whether the objective function
             was maximized or minimized.}
    \item{Tab}{final 'Tableau' of the Simplex algorith.}
    \item{lpSolve}{logical. Has the package 'lpSolve' been used to solve
       the LP problem.}
+   \item{solve.dual}{logical. Argument \code{solve.dual}.}
    \item{maxiter}{numeric. Argument \code{maxiter}.}
 }
 

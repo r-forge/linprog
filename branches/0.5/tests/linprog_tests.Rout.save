@@ -130,6 +130,9 @@ $maximum
 $lpSolve
 [1] FALSE
 
+$solve.dual
+[1] FALSE
+
 $maxiter
 [1] 1000
 
@@ -227,6 +230,9 @@ $maximum
 
 $lpSolve
 [1] TRUE
+
+$solve.dual
+[1] FALSE
 
 $maxiter
 [1] 1000
@@ -412,6 +418,9 @@ $maximum
 $lpSolve
 [1] FALSE
 
+$solve.dual
+[1] FALSE
+
 $maxiter
 [1] 1000
 
@@ -528,6 +537,9 @@ $maximum
 
 $lpSolve
 [1] TRUE
+
+$solve.dual
+[1] FALSE
 
 $maxiter
 [1] 1000
