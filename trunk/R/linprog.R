@@ -400,7 +400,7 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       result$iter2    <- iter2
       result$allvar   <- round( allvar, digits=rdigits )
       result$basvar   <- round( basvar, digits=rdigits )
-      result$solution <- allvar$opt[ 1 : nVar ]
+      result$solution <- result$allvar$opt[ 1 : nVar ]
       names( result$solution ) <- clab[ 1: nVar ]
       result$con      <- con
       if( verbose >= 1 ) result$Tab <- Tab
