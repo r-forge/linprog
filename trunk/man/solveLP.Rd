@@ -107,6 +107,7 @@ in \eqn{A x <= b} can be changed with argument \code{const.dir}.
    \item{Tab}{final 'Tableau' of the Simplex algorith.}
    \item{lpSolve}{logical. Has the package 'lpSolve' been used to solve
       the LP problem.}
+   \item{solve.dual}{logical. Argument \code{solve.dual}.}
    \item{maxiter}{numeric. Argument \code{maxiter}.}
 }
 
