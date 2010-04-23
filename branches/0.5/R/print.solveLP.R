@@ -47,7 +47,7 @@ print.solveLP <- function( x, digits=6,... ) {
          print( object$allvar )
       }
    } else if( object$status == 1 ) {
-      cat( "lpSolve returned error code: ", object$lpStatus, "\n" )
+      cat( "lpSolve returned error code '", object$lpStatus, "'", sep = "" )
    }
    if( object$status == 3 ) {
       print( object$con[ 1: 4 ] )
