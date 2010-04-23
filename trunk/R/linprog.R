@@ -100,6 +100,8 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          }
          if( result$dualStatus == 0 ) {
             result$con$dual <- dualres$solution
+         } else {
+            result$status <- 2
          }
       }
    } else {
@@ -386,7 +388,11 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          con$dual.p <- con$dual
          dualres <- solveLP( bvec, cvec, t(Amat), const.dir = rep(">=",length(cvec)) )
          result$dualStatus <- dualres$status
-         con$dual <- dualres$solution
+         if( result$dualStatus == 0 ) {
+            con$dual <- dualres$solution
+         } else {
+            result$status <- 2
+         }
       }
 
       result$opt      <- round( -Tab[ nCon+1, nCon+nVar+1 ], digits=rdigits ) * (-1)^maximum

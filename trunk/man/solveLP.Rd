@@ -91,6 +91,7 @@ in \eqn{A x <= b} can be changed with argument \code{const.dir}.
             6th column = valid region for these derivatives.}
    \item{status}{numeric. Indicates if the optimization did succeed:\cr
       0 = success; 1 = lpSolve did not succeed;
+      2 = solving the dual problem did not succeed;
       3 = constraints are violated at the solution
          (internal error or large rounding errors);
       4 = simplex algorithm phase 1 did not find a solution within
@@ -99,7 +100,7 @@ in \eqn{A x <= b} can be changed with argument \code{const.dir}.
          the number of iterations specified by argument \code{maxiter}.}
    \item{lpStatus}{numeric. Return code of \code{\link[lpSolve]{lp}}
       (only if argument \code{lpSolve} is \code{TRUE}).}
-   \item{dualStatus}{numeric. Return code of \code{\link[lpSolve]{lp}}
+   \item{dualStatus}{numeric. Return code from solving the dual problem
       (only if argument \code{solve.dual} is \code{TRUE}).}
    \item{maximum}{logical. Indicates whether the objective function
             was maximized or minimized.}

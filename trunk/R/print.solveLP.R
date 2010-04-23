@@ -8,7 +8,7 @@ print.solveLP <- function( x, digits=6,... ) {
    cat("\n\nResults of Linear Programming / Linear Optimization\n")
    if( object$lpSolve ) cat("(using lpSolve)\n")
 
-   if( object$status %in% c( 0, 4, 5 ) ) {
+   if( object$status %in% c( 0, 2, 4, 5 ) ) {
       cat("\nObjective function")
       if( object$maximum ) {
          cat(" (Maximum): ")
@@ -55,14 +55,8 @@ print.solveLP <- function( x, digits=6,... ) {
       }
    }
    if( object$status == 2 ) {
-      if( sum( object$dualStatus == 2 ) == length( object$lpStatus ) ) {
-         cat( "lpSolve did not find a feasible solution for the dual problem",
-            "(Error: status 2) after ", length( object$lpStatus ) - 1,
-            " permutation(s) of rows" )
-      } else {
-         cat( "lpSolve for the dual problem did not succeed. It returned",
-            "following error codes: ", object$lpStatus )
-      }
+      cat( "lpSolve for the dual problem did not succeed but returned",
+         " status code '", object$dualStatus, "'", sep = "" )
    } else if( object$status == 3 ) {
       print( object$con[ 1: 4 ] )
       cat( "The Constraints are violated. This is most likely due to rounding errors" )
