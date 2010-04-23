@@ -48,18 +48,18 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          direction <- "min"
       }
       lpres <- lp( direction = direction, cvec, Amat, const.dir, bvec )
-      if( lpres$status == 0 ) {
+      result$lpStatus <- lpres$status
+      if( result$lpStatus == 0 ) {
          if( min( lpres$solution ) < -tol ) {
-            lpres$status <- 7
+            result$lpStatus <- 7
          } else if( max( ( bvec - c( Amat %*% lpres$solution ) ) *
                const.dir2 ) > tol ) {
-            lpres$status <- 3
+            result$lpStatus <- 3
          }
       }
 
-      if( lpres$status != 0 ) {
+      if( result$lpStatus != 0 ) {
          result$status <- 1
-         result$lpStatus <- lpres$status
       } else  {
          result$solution            <- lpres$solution
          names( result$solution )   <- clab
