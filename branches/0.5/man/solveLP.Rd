@@ -88,8 +88,10 @@ solveLP( cvec, bvec, Amat, maximum=FALSE,
       0 = success; 1 = lpSolve did not succeed;
       3 = constraints are violated at the solution
          (internal error or large rounding errors);
-      4 = simplex algorithm phase 1 did not succeed;
-      5 = simplex algorithm phase 2 did not succeed.}
+      4 = simplex algorithm phase 1 did not find a solution within
+         the number of iterations specified by argument \code{maxiter};
+      5 = simplex algorithm phase 2 did not find the optimal solution within
+         the number of iterations specified by argument \code{maxiter}.}
    \item{lpStatus}{numeric. Return code of \code{\link[lpSolve]{lp}}
       (only if it is non-zero).}
    \item{maximum}{logical. Indicates whether the objective function
