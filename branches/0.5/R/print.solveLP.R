@@ -8,7 +8,7 @@ print.solveLP <- function( x, digits=6,... ) {
    cat("\n\nResults of Linear Programming / Linear Optimization\n")
    if( object$lpSolve ) cat("(using lpSolve)\n")
 
-   if( object$status %in% c( 0, 4, 5 ) ) {
+   if( object$status %in% c( 0, 3, 4, 5 ) ) {
       cat("\nObjective function")
       if( object$maximum ) {
          cat(" (Maximum): ")
@@ -46,18 +46,20 @@ print.solveLP <- function( x, digits=6,... ) {
          cat("\nAll Variables (including slack variables)\n")
          print( object$allvar )
       }
+      if( object$status == 3 ) {
+         print( object$con[ 1: 4 ] )
+         cat( "The Constraints are violated. This is most likely due to rounding errors" )
+      } else if( object$status == 4 ) {
+         cat( "Simplex algorithm phase 1 did not find a solution within",
+            "the number of iterations specified by argument 'maxiter'" )
+      } else if( object$status == 5 ) {
+         cat( "Simplex algorithm phase 2 did not find the optimal solution within",
+            "the number of iterations specified by argument 'maxiter'" )
+      }
    } else if( object$status == 1 ) {
       cat( "lpSolve returned error code '", object$lpStatus, "'", sep = "" )
-   }
-   if( object$status == 3 ) {
-      print( object$con[ 1: 4 ] )
-      cat( "The Constraints are violated. This is most likely due to rounding errors" )
-   } else if( object$status == 4 ) {
-      cat( "Simplex algorithm phase 1 did not find a solution within",
-         "the number of iterations specified by argument 'maxiter'" )
-   } else if( object$status == 5 ) {
-      cat( "Simplex algorithm phase 2 did not find the optimal solution within",
-         "the number of iterations specified by argument 'maxiter'" )
+   } else {
+      cat( "unknown status code '", object$status, "'", sep = "" )
    }
 
    cat("\n")
