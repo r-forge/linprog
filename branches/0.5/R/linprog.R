@@ -385,8 +385,17 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
             stop( paste( "At the moment the dual problem can not be solved",
                "with equality constraints" ) )
          }
+
+         if( maximum ) {
+            const.dir.dual <- rep(">=",nVar)
+         } else {
+            const.dir.dual <- rep("<=",nVar)
+         }
+
          con$dual.p <- con$dual
-         dualres <- solveLP( bvec, cvec, t(Amat), const.dir = rep(">=",length(cvec)) )
+         dualres <- solveLP( bvec * const.dir2 * (-1)^maximum, cvec,
+            t( Amat * const.dir2 ) * (-1)^maximum, const.dir = const.dir.dual,
+            maximum = !maximum )
          result$dualStatus <- dualres$status
          if( result$dualStatus == 0 ) {
             con$dual <- dualres$solution
