@@ -67,9 +67,11 @@ print.solveLP <- function( x, digits=6,... ) {
       print( object$con[ 1: 4 ] )
       cat( "The Constraints are violated. This is most likely due to rounding errors" )
    } else if( object$status == 4 ) {
-      cat( "Simplex algorithm phase 1 did not succeed" )
+      cat( "Simplex algorithm phase 1 did not find a solution within",
+         "the number of iterations specified by argument 'maxiter'" )
    } else if( object$status == 5 ) {
-      cat( "Simplex algorithm phase 2 did not succeed" )
+      cat( "Simplex algorithm phase 2 did not find the optimal solution within",
+         "the number of iterations specified by argument 'maxiter'" )
    }
 
    cat("\n")
