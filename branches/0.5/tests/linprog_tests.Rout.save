@@ -145,7 +145,7 @@ attr(,"class")
 Land     39.2  <=   40  0.8   0.0      0.8    0.0
 Stable   90.0  <=   90  0.0 240.0     15.0  240.0
 Labor  2500.0  <= 2500  0.0  28.8   1375.0   28.8
-> all.equal( result1a[-12], result1aD[-c(2,13)] )
+> all.equal( result1a[-12], result1aD[-c(10,13)] )
 [1] "Component 8: Length mismatch: comparison on first 6 components"
 > 
 > # estimation with verbose = TRUE
@@ -336,7 +336,7 @@ S Labor   0.0    0  -Inf   28.800  -28.8  1375.00
 Land     -39.2  >=   -40  0.8   0.0      0.8    0.0
 Stable   -90.0  >=   -90  0.0 240.0     15.0  240.0
 Labor  -2500.0  >= -2500  0.0  28.8   1375.0   28.8
-> all.equal( result1aD[-9], result1dD[-9] )
+> all.equal( result1aD[-8], result1dD[-8] )
 [1] TRUE
 > 
 > # using argument const.dir and lpSolve
@@ -499,7 +499,7 @@ attr(,"class")
 Protein -10.000000  <= -10.0 0.000000 0.5681818 3.600000 0.5681818
 Fat      -1.500000  <=  -1.5 0.000000 3.1818182 1.350000 3.1818182
 Fibre     9.545455  <=  12.0 2.454545 0.0000000 2.454545 0.0000000
-> all.equal( result2a[-12], result2aD[-c(2,13)] )
+> all.equal( result2a[-12], result2aD[-c(10,13)] )
 [1] "Component 8: Length mismatch: comparison on first 6 components"
 > 
 > # estimation with verbose = TRUE
@@ -729,7 +729,7 @@ S Fibre   2.45455  0.0        NA 0.833333 0.000000       NA
 Protein 10.000000  >= 10.0 0.000000 0.5681818 3.600000 0.5681818
 Fat      1.500000  >=  1.5 0.000000 3.1818182 1.350000 3.1818182
 Fibre    9.545455  <= 12.0 2.454545 0.0000000 2.454545 0.0000000
-> all.equal( result2aD[-9], result2dD[-9] )
+> all.equal( result2aD[-8], result2dD[-8] )
 [1] TRUE
 > 
 > # using argument const.dir and lpSolve

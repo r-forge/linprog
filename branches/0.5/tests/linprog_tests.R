@@ -18,7 +18,7 @@ print.default( result1a )
 # also estimate the dual problem
 result1aD <- solveLP( cvec, bvec, Amat, TRUE, verbose = 1, solve.dual = TRUE )
 result1aD$con
-all.equal( result1a[-12], result1aD[-c(2,13)] )
+all.equal( result1a[-12], result1aD[-c(10,13)] )
 
 # estimation with verbose = TRUE
 result1b <- solveLP( cvec, bvec, Amat, TRUE, verbose = 4 )
@@ -49,7 +49,7 @@ all.equal( result1a[-8], result1d[-8] )
 result1dD <- solveLP( cvec, -bvec, -Amat, TRUE, verbose = 1,
    const.dir = const.dir, solve.dual = TRUE )
 result1dD$con
-all.equal( result1aD[-9], result1dD[-9] )
+all.equal( result1aD[-8], result1dD[-8] )
 
 # using argument const.dir and lpSolve
 result1e <-solveLP( cvec, -bvec, -Amat, maximum = TRUE, verbose = 1,
@@ -81,7 +81,7 @@ print.default( result2a )
 # also estimate the dual problem
 result2aD <- solveLP( cvec, bvec, Amat, verbose = 1, solve.dual = TRUE )
 result2aD$con
-all.equal( result2a[-12], result2aD[-c(2,13)] )
+all.equal( result2a[-12], result2aD[-c(10,13)] )
 
 # estimation with verbose = TRUE
 result2b <- solveLP( cvec, bvec, Amat, verbose = 4 )
@@ -113,7 +113,7 @@ all.equal( result2a[-8], result2d[-8] )
 result2dD <- solveLP( cvec, abs( bvec ), abs( Amat ), verbose = 1,
    const.dir = const.dir, solve.dual = TRUE )
 result2dD$con
-all.equal( result2aD[-9], result2dD[-9] )
+all.equal( result2aD[-8], result2dD[-8] )
 
 # using argument const.dir and lpSolve
 result2e <- solveLP( cvec, abs( bvec ), abs( Amat ), verbose = 1,

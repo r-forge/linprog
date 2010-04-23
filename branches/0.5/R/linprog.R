@@ -75,37 +75,6 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          result$con$free[ const.dir2 == 0 ] <- -abs( result$con$free[ const.dir2 == 0 ] )
       }
 
-      ## solving the dual problem
-      if( result$status == 0 && solve.dual ) {
-         if( sum( const.dir2 == 0 ) > 0 ) {
-            stop( paste("At the moment the dual problem can not be solved with",
-                        "equality constraints" ) )
-         }
-         if( maximum ) {
-            direction <- "min"
-            const.dir.dual <- rep(">=",nVar)
-         } else {
-            direction <- "max"
-            const.dir.dual <- rep("<=",nVar)
-         }
-         dualres <- lp( direction, bvec * const.dir2 * (-1)^maximum,
-            t( Amat * const.dir2 ) * (-1)^maximum, const.dir.dual, cvec )
-         result$dualStatus <- dualres$status
-         if( result$dualStatus == 0 ) {
-            if( min( dualres$solution ) < -dualtol ) {
-               result$dualStatus <- 7
-            } else if( max( round( cvec - c( ( t( Amat * const.dir2 ) *
-               (-1)^maximum ) %*% dualres$solution ), digits=rdigits ) *
-               ( -1 )^(!maximum) ) > dualtol ) {
-               result$dualStatus <- 3
-            }
-         }
-         if( result$dualStatus == 0 ) {
-            result$con$dual <- dualres$solution
-         } else {
-            result$status <- 2
-         }
-      }
    } else {
       ## Simplex algorithm
       iter1 <- 0
@@ -380,30 +349,6 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
       con$free[ const.dir2 == 1 ] <- -con$free[ const.dir2 == 1 ]
       con$free[ const.dir2 == 0 ] <- -abs( con$free[ const.dir2 == 0 ] )
 
-      if( solve.dual ) {
-         if( sum( const.dir2 == 0 ) > 0 ) {
-            stop( paste( "At the moment the dual problem can not be solved",
-               "with equality constraints" ) )
-         }
-
-         if( maximum ) {
-            const.dir.dual <- rep(">=",nVar)
-         } else {
-            const.dir.dual <- rep("<=",nVar)
-         }
-
-         con$dual.p <- con$dual
-         dualres <- solveLP( bvec * const.dir2 * (-1)^maximum, cvec,
-            t( Amat * const.dir2 ) * (-1)^maximum, const.dir = const.dir.dual,
-            maximum = !maximum )
-         result$dualStatus <- dualres$status
-         if( result$dualStatus == 0 ) {
-            con$dual <- dualres$solution
-         } else {
-            result$status <- 2
-         }
-      }
-
       result$opt      <- round( -Tab[ nCon+1, nCon+nVar+1 ], digits=rdigits ) * (-1)^maximum
       result$iter1    <- iter1
       result$iter2    <- iter2
@@ -421,6 +366,32 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
    if( result$status == 0 ) {
       if( min ( result$con$free ) < - tol ) {
          result$status <- 3
+      }
+   }
+
+   ## solving the dual problem
+   if( solve.dual && result$status == 0 ) {
+      if( any( const.dir2 == 0 ) ) {
+         stop( paste( "At the moment the dual problem can not be solved",
+            "with equality constraints" ) )
+      }
+
+      if( maximum ) {
+         const.dir.dual <- rep(">=",nVar)
+      } else {
+         const.dir.dual <- rep("<=",nVar)
+      }
+
+      result$con$dual.p <- result$con$dual
+      dualres <- solveLP( cvec = bvec * const.dir2 * (-1)^maximum, bvec = cvec,
+         Amat = t( Amat * const.dir2 ) * (-1)^maximum, maximum = !maximum,
+         const.dir = const.dir.dual, maxiter = maxiter, zero = zero,
+         tol = dualtol, lpSolve = lpSolve )
+      result$dualStatus <- dualres$status
+      if( result$dualStatus == 0 ) {
+         result$con$dual <- dualres$solution
+      } else {
+         result$status <- 2
       }
    }
 
