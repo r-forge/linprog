@@ -47,12 +47,7 @@ print.solveLP <- function( x, digits=6,... ) {
          print( object$allvar )
       }
    } else if( object$status == 1 ) {
-      if( sum( object$lpStatus == 2 ) == length( object$lpStatus ) ) {
-         cat( "lpSolve did not find a feasible solution (Error: status 2)",
-            " after ", length( object$lpStatus ) - 1, " permutation(s) of rows" )
-      } else {
-         cat( "lpSolve returned only error codes: ", object$lpStatus )
-      }
+      cat( "lpSolve returned error code '", object$lpStatus, "'", sep = "" )
    }
    if( object$status == 2 ) {
       cat( "lpSolve for the dual problem did not succeed but returned",
