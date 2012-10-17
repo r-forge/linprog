@@ -24,6 +24,15 @@ solveLP <- function( cvec, bvec, Amat, maximum=FALSE,
          const.dir == "==" | const.dir == "<=" | const.dir == "<" ) < nCon ) {
        stop( "'const.dir' may only contain '>=', '>', '=', '==', '<=' or '<'" )
    }
+   if( any( const.dir %in% c( "=", "==" ) ) && ( ! lpSolve ) ) {
+      warning( "solveLP() might return incorrect results",
+         " if the model includes equality constraints",
+         " and argument 'lpSolve' is 'FALSE';",
+         " please check if solveLP() returns the same results",
+         " with argument 'lpSolve' equal to 'TRUE';",
+         " more information on this bug available at",
+         " linprog's R-Forge site" )
+   }
 
    ## Labels
    if( is.null(names(cvec))) {
