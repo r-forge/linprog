@@ -1,6 +1,6 @@
 Package: linprog
-Version: 0.9-3
-Date: 2012/10/17
+Version: 0.9-4
+Date: 2022-03-09
 Title: Linear Programming / Optimization
 Author: Arne Henningsen
 Maintainer: Arne Henningsen <arne.henningsen@gmail.com>
