@@ -48,6 +48,9 @@ Amat <- rbind( c(  0.7,   0.35,   0 ),
 
 ## Write to MPS file
 writeMps( "steinh.mps", cvec, bvec, Amat, "Steinhauser" )
+
+## remove the MPS file
+file.remove( "steinh.mps" )
 }
 
 \keyword{ optimize }
